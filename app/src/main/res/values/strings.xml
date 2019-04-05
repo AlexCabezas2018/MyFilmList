@@ -6,4 +6,7 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="search_by_name_tag">Search by name</string>
+    <string name="make_a_review_tag">Make a review</string>
+    <string name="logo_image">logo image</string>
 </resources>
