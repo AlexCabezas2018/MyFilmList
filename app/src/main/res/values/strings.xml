@@ -9,4 +9,10 @@
     <string name="search_by_name_tag">Search by name</string>
     <string name="make_a_review_tag">Make a review</string>
     <string name="logo_image">logo image</string>
+    <string name="error_field_required">The title is required</string>
+    <string name="error_invalid_title">The title is ivalid</string>
+    <string name="permission_rationale">No se que es</string>
+    <string name="prompt_search">Title</string>
+    <string name="action_search">Search</string>
+    <string name="title_activity_seach">Search</string>
 </resources>
