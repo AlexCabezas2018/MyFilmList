@@ -26,6 +26,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
 import com.example.myfilmlist.R;
+import com.example.myfilmlist.presentation.context.Context;
+import com.example.myfilmlist.presentation.views.UpdatingView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +37,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class SearchActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class SearchActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, UpdatingView {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -248,6 +250,11 @@ public class SearchActivity extends AppCompatActivity implements LoaderCallbacks
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mSearchView.setAdapter(adapter);
+    }
+
+    @Override
+    public void update(Context resultdata) {
+
     }
 
 
