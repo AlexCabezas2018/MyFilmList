@@ -5,6 +5,7 @@ package com.example.myfilmlist.presentation.presenter;
  * In this case, we must use a singleton to make sure we have only one instance of the class in the app.
  */
 
+import com.example.myfilmlist.exceptions.ASException;
 import com.example.myfilmlist.presentation.context.Context;
 
 public abstract class Presenter {
@@ -19,6 +20,6 @@ public abstract class Presenter {
         return instance;
     }
 
-    public abstract void action(Context context);
+    public abstract void action(Context context) throws ASException;
 
 }

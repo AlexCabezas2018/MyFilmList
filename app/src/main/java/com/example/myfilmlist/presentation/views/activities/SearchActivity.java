@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -26,7 +27,10 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
 import com.example.myfilmlist.R;
+import com.example.myfilmlist.exceptions.ASException;
 import com.example.myfilmlist.presentation.context.Context;
+import com.example.myfilmlist.presentation.events.Events;
+import com.example.myfilmlist.presentation.presenter.Presenter;
 import com.example.myfilmlist.presentation.views.UpdatingView;
 
 import java.util.ArrayList;
@@ -73,12 +77,33 @@ public class SearchActivity extends AppCompatActivity implements LoaderCallbacks
         mSearchInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                try {
+                    String data = mSearchView.getText().toString();
+                    Presenter.getInstance().action(new Context(Events.SEARCH_BY_NAME, SearchActivity.this, data));
+                }
+                catch (ASException ex){
+                    ex.showMessage(SearchActivity.this);
+                }
+                //attemptLogin();
             }
         });
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         mSearchFormView = findViewById(R.id.search);
         mProgressView = findViewById(R.id.search_progress);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem iten) {
+        int id = iten.getItemId();
+
+        if(id == android.R.id.home) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(iten);
     }
 
     private void populateAutoComplete() {

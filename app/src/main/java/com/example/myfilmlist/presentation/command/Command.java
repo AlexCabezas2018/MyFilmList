@@ -1,5 +1,6 @@
 package com.example.myfilmlist.presentation.command;
 
+import com.example.myfilmlist.exceptions.ASException;
 import com.example.myfilmlist.presentation.context.Context;
 
 /**
@@ -12,5 +13,5 @@ public interface Command {
      * @param inputData
      * @return Context
      */
-    Context execute(Context inputData);
+    Context execute(Context inputData) throws ASException;
 }
