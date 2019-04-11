@@ -9,7 +9,7 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.myfilmlist.R;
-import com.example.myfilmlist.business.applicationservice.TFilmPreview;
+import com.example.myfilmlist.business.film.TFilmPreview;
 import com.example.myfilmlist.exceptions.ASException;
 import com.example.myfilmlist.integration.utils.PreviewListAdapter;
 import com.example.myfilmlist.presentation.context.Context;

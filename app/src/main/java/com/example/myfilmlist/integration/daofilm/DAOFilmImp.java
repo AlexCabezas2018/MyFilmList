@@ -92,7 +92,7 @@ public class DAOFilmImp extends DAOFilm{
             JSONObject film = films.getJSONObject(i);
 
             /*  Fill the object with the information */
-            filmPreview.setTittle(film.getString("Title"));
+            filmPreview.setTitle(film.getString("Title"));
             filmPreview.setYear(film.getString("Year"));
             filmPreview.setImdbID(film.getString("imdbID"));
             filmPreview.setType(film.getString("Type"));

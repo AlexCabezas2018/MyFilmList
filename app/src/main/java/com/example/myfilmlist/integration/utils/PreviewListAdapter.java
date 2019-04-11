@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.myfilmlist.R;
-import com.example.myfilmlist.business.applicationservice.TFilmPreview;
+import com.example.myfilmlist.business.film.TFilmPreview;
 
 import java.io.IOException;
 import java.io.InputStream;
