@@ -1,7 +1,7 @@
-package com.example.myfilmlist.business.applicationservice.film;
+package com.example.myfilmlist.business.film.filmappservice;
 
-import com.example.myfilmlist.business.applicationservice.TFilmFull;
-import com.example.myfilmlist.business.applicationservice.TFilmPreview;
+import com.example.myfilmlist.business.film.TFilmFull;
+import com.example.myfilmlist.business.film.TFilmPreview;
 import com.example.myfilmlist.exceptions.ASException;
 import com.example.myfilmlist.exceptions.DAOException;
 import com.example.myfilmlist.integration.daofilm.DAOFilm;
@@ -30,5 +30,17 @@ public class ASFilmImp extends ASFilm {
             throw new ASException(exception.getMessage());
         }
         return filmsToReturn;
+    }
+
+    /**
+     * Given an IMDB id, it returns the Film with all the information.
+     * @param id
+     * @return TFilmFull
+     * @throws ASException
+     */
+    @Override
+    public TFilmFull searchByIMDBId(String id) throws ASException {
+        //TODO implement the method
+        return null;
     }
 }

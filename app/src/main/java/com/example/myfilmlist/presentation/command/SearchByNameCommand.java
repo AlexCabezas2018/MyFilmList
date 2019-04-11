@@ -1,8 +1,7 @@
 package com.example.myfilmlist.presentation.command;
 
-import com.example.myfilmlist.business.applicationservice.TFilmPreview;
-import com.example.myfilmlist.business.applicationservice.film.ASFilm;
-import com.example.myfilmlist.business.applicationservice.TFilmFull;
+import com.example.myfilmlist.business.film.TFilmPreview;
+import com.example.myfilmlist.business.film.filmappservice.ASFilm;
 import com.example.myfilmlist.exceptions.ASException;
 import com.example.myfilmlist.presentation.context.Context;
 

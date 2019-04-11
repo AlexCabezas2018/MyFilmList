@@ -1,7 +1,7 @@
-package com.example.myfilmlist.business.applicationservice.film;
+package com.example.myfilmlist.business.film.filmappservice;
 
-import com.example.myfilmlist.business.applicationservice.TFilmFull;
-import com.example.myfilmlist.business.applicationservice.TFilmPreview;
+import com.example.myfilmlist.business.film.TFilmFull;
+import com.example.myfilmlist.business.film.TFilmPreview;
 import com.example.myfilmlist.exceptions.ASException;
 
 import java.util.List;
@@ -22,5 +22,6 @@ public abstract class ASFilm {
     }
 
     public abstract List<TFilmPreview> searchByName(String filmName) throws ASException;
+    public abstract TFilmFull searchByIMDBId(String id) throws ASException;
 
 }

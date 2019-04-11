@@ -1,4 +1,4 @@
-package com.example.myfilmlist.business.applicationservice;
+package com.example.myfilmlist.business.film;
 
 public class TFilmPreview {
     private String title;
