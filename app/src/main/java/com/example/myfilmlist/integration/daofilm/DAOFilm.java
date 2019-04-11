@@ -1,7 +1,7 @@
 package com.example.myfilmlist.integration.daofilm;
 
-import com.example.myfilmlist.business.applicationservice.TFilmFull;
-import com.example.myfilmlist.business.applicationservice.TFilmPreview;
+import com.example.myfilmlist.business.film.TFilmFull;
+import com.example.myfilmlist.business.film.TFilmPreview;
 import com.example.myfilmlist.exceptions.DAOException;
 
 import java.util.List;
@@ -23,5 +23,6 @@ public abstract class DAOFilm {
     }
 
     public abstract List<TFilmPreview> getFilmsByName(String filmName) throws DAOException;
+    public abstract TFilmFull getFilmByIMDBId(String id) throws DAOException;
 
 }

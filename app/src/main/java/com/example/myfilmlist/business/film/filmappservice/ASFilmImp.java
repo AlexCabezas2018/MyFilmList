@@ -1,7 +1,6 @@
-package com.example.myfilmlist.business.applicationservice.film;
+package com.example.myfilmlist.business.film.filmappservice;
 
-import com.example.myfilmlist.business.applicationservice.TFilmFull;
-import com.example.myfilmlist.business.applicationservice.TFilmPreview;
+import com.example.myfilmlist.business.film.TFilmPreview;
 import com.example.myfilmlist.exceptions.ASException;
 import com.example.myfilmlist.exceptions.DAOException;
 import com.example.myfilmlist.integration.daofilm.DAOFilm;
