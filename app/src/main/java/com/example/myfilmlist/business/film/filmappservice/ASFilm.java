@@ -1,5 +1,6 @@
 package com.example.myfilmlist.business.film.filmappservice;
 
+import com.example.myfilmlist.business.film.TFilmFull;
 import com.example.myfilmlist.business.film.TFilmPreview;
 import com.example.myfilmlist.exceptions.ASException;
 
@@ -21,5 +22,6 @@ public abstract class ASFilm {
     }
 
     public abstract List<TFilmPreview> searchByName(String filmName) throws ASException;
+    public abstract TFilmFull searchByIMDBId(String id) throws ASException;
 
 }
