@@ -1,6 +1,7 @@
 package com.example.myfilmlist.integration.utils;
 
-import com.example.myfilmlist.business.applicationservice.TFilmPreview;
+
+import com.example.myfilmlist.business.film.TFilmPreview;
 
 import org.json.JSONArray;
 import org.json.JSONException;
