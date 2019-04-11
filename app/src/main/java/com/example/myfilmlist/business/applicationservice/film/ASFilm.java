@@ -1,5 +1,7 @@
 package com.example.myfilmlist.business.applicationservice.film;
 
+import com.example.myfilmlist.business.applicationservice.TFilmFull;
+import com.example.myfilmlist.business.applicationservice.TFilmPreview;
 import com.example.myfilmlist.exceptions.ASException;
 
 import java.util.List;
@@ -19,6 +21,6 @@ public abstract class ASFilm {
         return instace;
     }
 
-    public abstract List<TFilm> searchByName(String filmName) throws ASException;
+    public abstract List<TFilmPreview> searchByName(String filmName) throws ASException;
 
 }

@@ -1,5 +1,7 @@
 package com.example.myfilmlist.business.applicationservice.film;
 
+import com.example.myfilmlist.business.applicationservice.TFilmFull;
+import com.example.myfilmlist.business.applicationservice.TFilmPreview;
 import com.example.myfilmlist.exceptions.ASException;
 import com.example.myfilmlist.exceptions.DAOException;
 import com.example.myfilmlist.integration.daofilm.DAOFilm;
@@ -17,8 +19,8 @@ public class ASFilmImp extends ASFilm {
      * @throws ASException
      */
     @Override
-    public List<TFilm> searchByName(String filmName) throws ASException {
-        List<TFilm> filmsToReturn;
+    public List<TFilmPreview> searchByName(String filmName) throws ASException {
+        List<TFilmPreview> filmsToReturn;
         try{
             String resultFilmName = URLEncoder.encode(filmName, "UTF-8"); //We encode our data in UTF-8 (because the api needs the encoded filmName)
             filmsToReturn = DAOFilm.getInstance().getFilmsByName(resultFilmName); //We call the data layer and obtain the films

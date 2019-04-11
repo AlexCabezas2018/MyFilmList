@@ -1,9 +1,12 @@
 package com.example.myfilmlist.integration.daofilm;
 
-import com.example.myfilmlist.business.applicationservice.film.TFilm;
+import com.example.myfilmlist.business.applicationservice.TFilmFull;
+import com.example.myfilmlist.business.applicationservice.TFilmPreview;
 import com.example.myfilmlist.exceptions.DAOException;
+import com.example.myfilmlist.integration.utils.FilmUtils;
 import com.example.myfilmlist.integration.utils.JSONUtils;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,10 +23,10 @@ public class DAOFilmImp extends DAOFilm{
 
 
     @Override
-    public List<TFilm> getFilmsByName(final String filmName) throws DAOException {
+    public List<TFilmPreview> getFilmsByName(final String filmName) throws DAOException {
         exceptionResponse = "";
         databaseResponse = null; //We clear these two variables every time we start an operation.
-        List<TFilm> filmsToReturn = new ArrayList<>();
+        List<TFilmPreview> filmsToReturn = new ArrayList<>();
         final CountDownLatch counter = new CountDownLatch(1); //This is used to wait to the thread to finish. Its a counter which starts from 1.
 
         try {
@@ -33,8 +36,7 @@ public class DAOFilmImp extends DAOFilm{
                     try {
                         String urlToFind = OMDB_URL_FOR_NAME.replace("¿", filmName); //We substitute the letter "¿" with the name of the film
                         databaseResponse = JSONUtils.readJsonFromUrl(urlToFind); //We obtain the response from the api
-                    }
-                    catch(IOException | JSONException exception) {
+                    } catch (IOException | JSONException exception) {
                         exceptionResponse = exception.getMessage(); //If we get an error, the variable will be != "" and we store the message of the exception
                     }
                     counter.countDown(); //We count down the counter we defined before. With this, the thread is saying it finished
@@ -43,12 +45,14 @@ public class DAOFilmImp extends DAOFilm{
             resourceThread.start(); //We start our thread
             counter.await(); //We wait to the counter to get 0
 
-            if(!exceptionResponse.equals("")) throw new DAOException(exceptionResponse); //There was an exception
+            if (!exceptionResponse.equals(""))
+                throw new DAOException(exceptionResponse); //There was an exception
 
             String response = databaseResponse.getString("Response"); //We obtain the attribute "Response" from the JSON
-            if(response.equals("False")) return null; //That means there is no film with that name.
+            if (response.equals("False")) return null; //That means there is no film with that name.
 
             //TODO Obtener las peliculas
+            filmsToReturn = FilmUtils.getFilmsFromJSON(databaseResponse);
 
         }
         catch (DAOException | InterruptedException | JSONException exception) {
