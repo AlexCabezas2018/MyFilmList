@@ -11,8 +11,10 @@
     <string name="logo_image">logo image</string>
     <string name="error_field_required">The title is required</string>
     <string name="error_invalid_title">The title is ivalid</string>
-    <string name="permission_rationale">No se que es</string>
-    <string name="prompt_search">Title</string>
-    <string name="action_search">Search</string>
+    <string name="typePreview">Type</string>
+    <string name="titlePreview">Title</string>
+    <string name="yearPreview">Year</string>
     <string name="title_activity_seach">Search</string>
+    <string name="hint">Title of the film</string>
+    <string name="posterDescription">film poster</string>
 </resources>

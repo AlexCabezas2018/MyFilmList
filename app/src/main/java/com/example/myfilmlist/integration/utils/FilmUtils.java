@@ -18,7 +18,7 @@ public class FilmUtils {
             TFilmPreview filmPreview = new TFilmPreview();
             JSONObject film = films.getJSONObject(i);
 
-            filmPreview.setTittle(film.getString("Title"));
+            filmPreview.setTitle(film.getString("Title"));
             filmPreview.setYear(film.getString("Year"));
             filmPreview.setImdbID(film.getString("imdbID"));
             filmPreview.setType(film.getString("Type"));

@@ -1,28 +1,28 @@
 package com.example.myfilmlist.business.applicationservice;
 
 public class TFilmPreview {
-    private String tittle;
+    private String title;
     private String year;
     private String imdbID;
     private String type;
     private String imageURL;
 
-    public TFilmPreview() {};
+    public TFilmPreview() {}
 
-    public TFilmPreview(String tittle, String year, String imdbID, String type, String imageURL) {
-        this.tittle = tittle;
+    public TFilmPreview(String title, String year, String imdbID, String type, String imageURL) {
+        this.title = title;
         this.year = year;
         this.imdbID = imdbID;
         this.type = type;
         this.imageURL = imageURL;
     }
 
-    public String getTittle() {
-        return tittle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTittle(String tittle) {
-        this.tittle = tittle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getYear() {
