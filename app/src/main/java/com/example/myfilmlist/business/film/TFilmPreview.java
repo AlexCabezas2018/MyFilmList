@@ -1,6 +1,8 @@
 package com.example.myfilmlist.business.film;
 
-public class TFilmPreview {
+import java.io.Serializable;
+
+public class TFilmPreview implements Serializable {
     private String title;
     private String year;
     private String imdbID;

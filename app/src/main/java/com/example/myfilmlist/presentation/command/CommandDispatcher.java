@@ -19,6 +19,9 @@ public class CommandDispatcher {
             case SEARCH_BY_NAME:
                 commandToReturn = new SearchByNameCommand();
                 break;
+            case SEARCH_BY_IMDB_ID:
+                commandToReturn = new SearchByIMDBIDCommand();
+                break;
             case ADD_REVIEW:
                 break;
             case REMOVE_REVIEW:

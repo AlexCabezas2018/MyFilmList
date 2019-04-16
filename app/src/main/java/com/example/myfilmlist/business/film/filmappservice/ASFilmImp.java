@@ -40,7 +40,13 @@ public class ASFilmImp extends ASFilm {
      */
     @Override
     public TFilmFull searchByIMDBId(String id) throws ASException {
-        //TODO implement the method
-        return null;
+        try{
+            TFilmFull filmToReturn = DAOFilm.getInstance().getFilmByIMDBId(id); //Get the film
+            if(filmToReturn == null) throw new ASException("The film doesn't exist"); //Then the film doesn't exist
+            else return filmToReturn;
+
+        } catch (DAOException e) {
+            throw new ASException(e.getMessage());
+        }
     }
 }

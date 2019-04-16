@@ -6,6 +6,7 @@ package com.example.myfilmlist.presentation.events;
 
 public enum Events {
     SEARCH_BY_NAME,
+    SEARCH_BY_IMDB_ID,
     ADD_REVIEW,
     REMOVE_REVIEW,
     ADD_TO_FILMLIST,

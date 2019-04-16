@@ -1,33 +1,16 @@
 package com.example.myfilmlist.integration.utils;
 
-
-import com.example.myfilmlist.business.film.TFilmPreview;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class FilmUtils {
-    public static List<TFilmPreview> getFilmsFromJSON(JSONObject jsonObject) throws JSONException {
-        List<TFilmPreview> filmsToReturn = new ArrayList<>();
+    public static String transformTime(String inputTime) {
+        String[] splitedTime = inputTime.split(" ");
+        if(inputTime.equals("N/A") || !splitedTime[1].equals("min")) return inputTime;
+        int timeInMinutes = Integer.parseInt(splitedTime[0]);
+        if(timeInMinutes < 60) return inputTime;
 
-        JSONArray films = jsonObject.getJSONArray("Search");
-        for (int i = 0; i < films.length(); i++) {
-            TFilmPreview filmPreview = new TFilmPreview();
-            JSONObject film = films.getJSONObject(i);
+        int hours = timeInMinutes / 60;
+        int minutes = timeInMinutes % 60;
 
-            filmPreview.setTitle(film.getString("Title"));
-            filmPreview.setYear(film.getString("Year"));
-            filmPreview.setImdbID(film.getString("imdbID"));
-            filmPreview.setType(film.getString("Type"));
-            filmPreview.setImageURL(film.getString("Poster"));
-
-            filmsToReturn.add(filmPreview);
-        }
-
-        return filmsToReturn;
+        String formatedString = hours + " h " + ((minutes > 0) ? + minutes + " min": "");
+        return formatedString;
     }
 }

@@ -1,14 +1,18 @@
 package com.example.myfilmlist.presentation.views.activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.myfilmlist.R;
+import com.example.myfilmlist.business.film.TFilmFull;
 import com.example.myfilmlist.business.film.TFilmPreview;
 import com.example.myfilmlist.exceptions.ASException;
 import com.example.myfilmlist.integration.utils.PreviewListAdapter;
@@ -22,9 +26,13 @@ import java.util.List;
 
 public class SearchActivity extends AppCompatActivity implements UpdatingView {
 
+    public static String FULL_FILM_FROM_SEARCHVIEW = "FFFSV";
+
     private SearchView mSearchView;
-    ProgressDialog progressDialog;
+    private ProgressDialog progressDialog;
     private ListView mListView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +68,22 @@ public class SearchActivity extends AppCompatActivity implements UpdatingView {
             }
         });
 
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    progressDialog.show();
+                    TFilmPreview filmFull = (TFilmPreview) mListView.getAdapter().getItem(position);
+                    String imdbId = filmFull.getImdbID();
+                    Presenter.getInstance().action(new Context(Events.SEARCH_BY_IMDB_ID, SearchActivity.this, imdbId));
+                }
+                catch (ASException ex) {
+                    progressDialog.dismiss();
+                    ex.showMessage(SearchActivity.this);
+                }
+            }
+        });
+
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -68,8 +92,18 @@ public class SearchActivity extends AppCompatActivity implements UpdatingView {
     @Override
     public void update(Context resultData) {
         progressDialog.dismiss();
-        PreviewListAdapter adapter = new PreviewListAdapter(this, R.layout.film_preview_layout, (List<TFilmPreview>) resultData.getData() );
-        mListView.setAdapter(adapter);
+        Events event = resultData.getEvent();
+
+        if(event == Events.SEARCH_BY_NAME) {
+            PreviewListAdapter adapter = new PreviewListAdapter(this, R.layout.film_preview_layout, (List<TFilmPreview>) resultData.getData());
+            mListView.setAdapter(adapter);
+        }
+
+        if(event == Events.SEARCH_BY_IMDB_ID){
+            Intent fullfilmIntent = new Intent(SearchActivity.this, FullFilmActivity.class);
+            fullfilmIntent.putExtra(FULL_FILM_FROM_SEARCHVIEW, (TFilmFull)resultData.getData());
+            startActivity(fullfilmIntent);
+        }
     }
 
     @Override

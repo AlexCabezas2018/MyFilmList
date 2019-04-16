@@ -1,22 +1,23 @@
 package com.example.myfilmlist.business.film;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class TFilmFull {
+public class TFilmFull implements Serializable {
     private String title;
     private String imageURL;
     private String genre;
     private String rate;
     private String year;
     private String duration;
-    private List<String> directors;
+    private String directors;
     private List<String> actors;
     private String plot;
 
     public TFilmFull() {};
 
     public TFilmFull(String title, String imageURL, String genre, String year,
-                     String duration, List<String> directors, List<String> actors, String plot, String rate) {
+                     String duration, String directors, List<String> actors, String plot, String rate) {
         this.title = title;
         this.imageURL = imageURL;
         this.genre = genre;
@@ -68,11 +69,11 @@ public class TFilmFull {
         this.duration = duration;
     }
 
-    public List<String> getDirectors() {
+    public String getDirectors() {
         return directors;
     }
 
-    public void setDirectors(List<String> directors) {
+    public void setDirectors(String directors) {
         this.directors = directors;
     }
 
