@@ -42,8 +42,9 @@ public class SearchActivity extends AppCompatActivity implements UpdatingView {
         setContentView(R.layout.activity_search);
         currentPage = 1;
         progressDialog = new ProgressDialog(SearchActivity.this);
-        progressDialog.setCancelable(false);
+        progressDialog.setCancelable(true);
         progressDialog.setMessage("Searching...");
+        progressDialog.setInverseBackgroundForced(true);
         mListView = findViewById(R.id.listView);
         mSearchView = findViewById(R.id.titleSearch);
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -51,13 +52,25 @@ public class SearchActivity extends AppCompatActivity implements UpdatingView {
             public boolean onQueryTextSubmit(String query) {
                 try {
                     if(InternetUtils.isNetworkAvailable(getApplicationContext())) {
-                        String data = mSearchView.getQuery().toString();
+                        final String data = mSearchView.getQuery().toString();
                         if(bufferedTitle == null || !bufferedTitle.equals(data)) {
                             bufferedTitle = data;
                             currentPage = 1;
                             progressDialog.show();
-                            Pair<String, Integer> pairToSearch = new Pair<>(data, currentPage);
-                            Presenter.getInstance().action(new Context(Events.SEARCH_BY_NAME_AND_PAGE, SearchActivity.this, pairToSearch));
+                            /* We execute complex process in other thread*/
+                            Thread taskThread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try{
+                                        Pair<String, Integer> pairToSearch = new Pair<>(data, currentPage);
+                                        Presenter.getInstance().action(new Context(Events.SEARCH_BY_NAME_AND_PAGE, SearchActivity.this, pairToSearch));
+                                    } catch (ASException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                            taskThread.start();
+
                         }
                     }
                     else throw new ASException("There was a problem while trying to connect to internet");
@@ -79,17 +92,21 @@ public class SearchActivity extends AppCompatActivity implements UpdatingView {
         /*This method will be called each time we select something from the listView*/
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                try {
-                    progressDialog.show();
-                    TFilmPreview filmFull = (TFilmPreview) mListView.getAdapter().getItem(position); //We get the film we selected.
-                    String imdbId = filmFull.getImdbID(); //Gets the IMDB id. We will use it to find the film with full information.
-                    Presenter.getInstance().action(new Context(Events.SEARCH_BY_IMDB_ID, SearchActivity.this, imdbId));
-                }
-                catch (ASException ex) {
-                    progressDialog.dismiss();
-                    ex.showMessage(SearchActivity.this);
-                }
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                progressDialog.show();
+                Thread taskThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+                            TFilmPreview filmFull = (TFilmPreview) mListView.getAdapter().getItem(position); //We get the film we selected.
+                            String imdbId = filmFull.getImdbID(); //Gets the IMDB id. We will use it to find the film with full information.
+                            Presenter.getInstance().action(new Context(Events.SEARCH_BY_IMDB_ID, SearchActivity.this, imdbId));
+                        } catch (ASException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                taskThread.start();
             }
         });
 
@@ -122,40 +139,46 @@ public class SearchActivity extends AppCompatActivity implements UpdatingView {
     }
 
     @Override
-    public void update(Context resultData) {
-        progressDialog.dismiss();
-        Events event = resultData.getEvent();
-        Pair<List<TFilmPreview>, String> data = (Pair<List<TFilmPreview>, String>) resultData.getData();
+    public void update(final Context resultData) {
+        /* Because we touch ui component, and we are executing tasks from NON-UI threads, we need to add this logic to the UIThread.*/
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+                Events event = resultData.getEvent();
 
-        /* We differentiate all possible events of update*/
+                /* We differentiate all possible events of update*/
 
-        if(event == Events.SEARCH_BY_NAME_AND_PAGE) {
-            if(currentPage == 1) { //Which means that is a new searching result
-                PreviewListAdapter adapter = new PreviewListAdapter(this, R.layout.film_preview_layout,
-                        data.first);
-                mListView.setAdapter(adapter);
-                setTitle("Results for " + '"' + bufferedTitle + '"'); //Changes the title (for example: results for "Batman" )
+                if(event == Events.SEARCH_BY_NAME_AND_PAGE) {
+                    Pair<List<TFilmPreview>, String> data = (Pair<List<TFilmPreview>, String>) resultData.getData();
+                    if(currentPage == 1) { //Which means that is a new searching result
+                        PreviewListAdapter adapter = new PreviewListAdapter(SearchActivity.this, R.layout.film_preview_layout,
+                                data.first);
+                        mListView.setAdapter(adapter);
+                        setTitle("Results for " + '"' + bufferedTitle + '"'); //Changes the title (for example: results for "Batman" )
 
+                    }
+                    else { //We requested a new page
+                        ((PreviewListAdapter) mListView.getAdapter()).
+                                addAll(data.first);
+                    }
+
+                    /*For debug and testing*/
+                    /*TODO find a better way to show this information (instead of just 'toasting' it)*/
+                    Toast.makeText(getApplicationContext(),
+                            "Page " + currentPage + " of " + data.second, Toast.LENGTH_LONG).show();
+
+                    currentPage++;
+                }
+
+                if(event == Events.SEARCH_BY_IMDB_ID){
+                    Intent fullfilmIntent = new Intent(SearchActivity.this, FullFilmActivity.class);
+                    fullfilmIntent.putExtra(FULL_FILM_FROM_SEARCHVIEW, (TFilmFull)resultData.getData()); //We set the film into the intent
+                    startActivity(fullfilmIntent);
+                }
             }
-            else { //We requested a new page
-                ((PreviewListAdapter) mListView.getAdapter()).
-                        addAll(data.first);
+        });
 
-            }
-
-            /*For debug and testing*/
-            /*TODO find a better way to show this information (instead of just 'toasting' it)*/
-            Toast.makeText(getApplicationContext(),
-                    "Page " + currentPage + " of " + data.second, Toast.LENGTH_LONG).show();
-
-            currentPage++;
-        }
-
-        if(event == Events.SEARCH_BY_IMDB_ID){
-            Intent fullfilmIntent = new Intent(SearchActivity.this, FullFilmActivity.class);
-            fullfilmIntent.putExtra(FULL_FILM_FROM_SEARCHVIEW, (TFilmFull)resultData.getData()); //We set the film into the intent
-            startActivity(fullfilmIntent);
-        }
     }
 
     @Override
