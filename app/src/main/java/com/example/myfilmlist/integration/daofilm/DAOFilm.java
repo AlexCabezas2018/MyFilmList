@@ -1,8 +1,11 @@
 package com.example.myfilmlist.integration.daofilm;
 
+import android.util.Pair;
+
 import com.example.myfilmlist.business.film.TFilmFull;
 import com.example.myfilmlist.business.film.TFilmPreview;
 import com.example.myfilmlist.exceptions.DAOException;
+import com.example.myfilmlist.presentation.context.Context;
 
 import java.util.List;
 
@@ -22,7 +25,7 @@ public abstract class DAOFilm {
         return instance;
     }
 
-    public abstract List<TFilmPreview> getFilmsByName(String filmName) throws DAOException;
     public abstract TFilmFull getFilmByIMDBId(String id) throws DAOException;
+    public abstract Pair<List<TFilmPreview>, String> getFilmsFromNextPage(Pair<String, Integer> inputInformation) throws DAOException;
 
 }

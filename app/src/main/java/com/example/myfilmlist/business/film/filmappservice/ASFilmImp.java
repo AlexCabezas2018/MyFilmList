@@ -1,5 +1,7 @@
 package com.example.myfilmlist.business.film.filmappservice;
 
+import android.util.Pair;
+
 import com.example.myfilmlist.business.film.TFilmFull;
 import com.example.myfilmlist.business.film.TFilmPreview;
 import com.example.myfilmlist.exceptions.ASException;
@@ -11,26 +13,6 @@ import java.net.URLEncoder;
 import java.util.List;
 
 public class ASFilmImp extends ASFilm {
-
-    /**
-     * Given a name, it returns the film or films that contains the title
-     * @param filmName
-     * @return
-     * @throws ASException
-     */
-    @Override
-    public List<TFilmPreview> searchByName(String filmName) throws ASException {
-        List<TFilmPreview> filmsToReturn;
-        try{
-            String resultFilmName = URLEncoder.encode(filmName, "UTF-8"); //We encode our data in UTF-8 (because the api needs the encoded filmName)
-            filmsToReturn = DAOFilm.getInstance().getFilmsByName(resultFilmName); //We call the data layer and obtain the films
-            if(filmsToReturn == null) throw new ASException("The film doesn't exist"); //That means the film does not exist
-        }
-        catch(DAOException | ASException | UnsupportedEncodingException exception) {
-            throw new ASException(exception.getMessage());
-        }
-        return filmsToReturn;
-    }
 
     /**
      * Given an IMDB id, it returns the Film with all the information.
@@ -47,6 +29,28 @@ public class ASFilmImp extends ASFilm {
 
         } catch (DAOException e) {
             throw new ASException(e.getMessage());
+        }
+    }
+
+
+    /**
+     * Given a string and a page number, it returns the films in the indicated page and the number of available pages.
+     * @param nameAndPage
+     * @return
+     * @throws ASException
+     */
+    @Override
+    public Pair<List<TFilmPreview>, String> searchByPage(Pair<String, Integer> nameAndPage) throws ASException {
+        try{
+            String urlToEncode = URLEncoder.encode(nameAndPage.first, "UTF-8"); //We encode our data in UTF-8 (because the api needs the encoded filmName)
+            Pair<String, Integer> pairToSearch = new Pair<>(urlToEncode, nameAndPage.second); //Create a new Pair with the encoded title
+            Pair<List<TFilmPreview>, String> filmsToReturn = DAOFilm.getInstance().getFilmsFromNextPage(pairToSearch);
+            if(filmsToReturn == null && nameAndPage.second == 1) throw new ASException("The film doesn't exist");
+            if(filmsToReturn == null) throw new ASException("No more results for '" + nameAndPage.first + "'."); //Means that we have reached the total amount of pages.
+            else return filmsToReturn;
+
+        } catch (DAOException | UnsupportedEncodingException exception) {
+            throw new ASException(exception.getMessage());
         }
     }
 }

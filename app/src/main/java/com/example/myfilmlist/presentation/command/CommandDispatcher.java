@@ -16,11 +16,11 @@ public class CommandDispatcher {
     public static Command dispatchCommand(Context context) {
         Command commandToReturn = null;
         switch (context.getEvent()) {
-            case SEARCH_BY_NAME:
-                commandToReturn = new SearchByNameCommand();
-                break;
             case SEARCH_BY_IMDB_ID:
                 commandToReturn = new SearchByIMDBIDCommand();
+                break;
+            case SEARCH_BY_NAME_AND_PAGE:
+                commandToReturn = new SearchByNameAndPageCommand();
                 break;
             case ADD_REVIEW:
                 break;

@@ -1,5 +1,7 @@
 package com.example.myfilmlist.business.film.filmappservice;
 
+import android.util.Pair;
+
 import com.example.myfilmlist.business.film.TFilmFull;
 import com.example.myfilmlist.business.film.TFilmPreview;
 import com.example.myfilmlist.exceptions.ASException;
@@ -21,7 +23,6 @@ public abstract class ASFilm {
         return instace;
     }
 
-    public abstract List<TFilmPreview> searchByName(String filmName) throws ASException;
     public abstract TFilmFull searchByIMDBId(String id) throws ASException;
-
+    public abstract Pair<List<TFilmPreview>, String> searchByPage(Pair<String, Integer> nameAndPage) throws ASException;
 }
