@@ -64,8 +64,14 @@ public class SearchActivity extends AppCompatActivity implements UpdatingView {
                                     try{
                                         Pair<String, Integer> pairToSearch = new Pair<>(data, currentPage);
                                         Presenter.getInstance().action(new Context(Events.SEARCH_BY_NAME_AND_PAGE, SearchActivity.this, pairToSearch));
-                                    } catch (ASException e) {
-                                        e.printStackTrace();
+                                    } catch (final ASException e) {
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                progressDialog.dismiss();
+                                                e.showMessage(SearchActivity.this);
+                                            }
+                                        });
                                     }
                                 }
                             });
@@ -101,8 +107,14 @@ public class SearchActivity extends AppCompatActivity implements UpdatingView {
                             TFilmPreview filmFull = (TFilmPreview) mListView.getAdapter().getItem(position); //We get the film we selected.
                             String imdbId = filmFull.getImdbID(); //Gets the IMDB id. We will use it to find the film with full information.
                             Presenter.getInstance().action(new Context(Events.SEARCH_BY_IMDB_ID, SearchActivity.this, imdbId));
-                        } catch (ASException e) {
-                            e.printStackTrace();
+                        } catch (final ASException e) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressDialog.dismiss();
+                                    e.showMessage(SearchActivity.this);
+                                }
+                            });
                         }
                     }
                 });
