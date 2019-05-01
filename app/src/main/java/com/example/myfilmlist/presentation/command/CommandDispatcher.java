@@ -23,6 +23,7 @@ public class CommandDispatcher {
                 commandToReturn = new SearchByNameAndPageCommand();
                 break;
             case ADD_REVIEW:
+                commandToReturn = new SaveReviewCommand();
                 break;
             case REMOVE_REVIEW:
                 break;
