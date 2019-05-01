@@ -43,19 +43,18 @@ public class PreviewListAdapter extends ArrayAdapter<TFilmPreview> {
 
         TFilmPreview film = films.get(position);
 
-        title.setText(film.getTitle());
+        String prevTitle = film.getTitle();
+        if (prevTitle.length() > 50){
+            prevTitle = prevTitle.substring(0, 47).concat("...");
+        }
+        title.setText(prevTitle);
         type.setText(film.getType());
-        year.setText(film.getYear());
+        String prevYear = film.getYear();
+        if (prevYear.endsWith("–")){
+            prevYear = prevYear.concat("Present");
+        }
+        year.setText(prevYear);
         new ImageFromURL(poster).execute(film.getImageURL());
-        //Bitmap postermap = null;
-        //InputStream in = null;
-        //try {
-        //    in = new URL(film.getImageURL()).openStream();
-        //    postermap = BitmapFactory.decodeStream(in);
-        //} catch (IOException e) {
-        //    e.printStackTrace();
-        //}
-        //poster.setImageBitmap(postermap);
 
         return previewView;
     }

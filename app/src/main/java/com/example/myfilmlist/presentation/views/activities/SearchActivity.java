@@ -11,7 +11,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.example.myfilmlist.R;
 import com.example.myfilmlist.business.film.TFilmFull;
@@ -35,16 +35,20 @@ public class SearchActivity extends AppCompatActivity implements UpdatingView {
     private ListView mListView;
     private int currentPage;
     private String bufferedTitle;
+    private TextView numPages;
+    private Boolean moreResults;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         currentPage = 1;
+        moreResults = true;
         progressDialog = new ProgressDialog(SearchActivity.this);
         progressDialog.setCancelable(true);
         progressDialog.setMessage("Searching...");
         progressDialog.setInverseBackgroundForced(true);
+        numPages = findViewById(R.id.numPages);
         mListView = findViewById(R.id.listView);
         mSearchView = findViewById(R.id.titleSearch);
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -56,6 +60,7 @@ public class SearchActivity extends AppCompatActivity implements UpdatingView {
                         if(bufferedTitle == null || !bufferedTitle.equals(data)) {
                             bufferedTitle = data;
                             currentPage = 1;
+                            mSearchView.clearFocus();
                             progressDialog.show();
                             /* We execute complex process in other thread*/
                             Thread taskThread = new Thread(new Runnable() {
@@ -127,7 +132,7 @@ public class SearchActivity extends AppCompatActivity implements UpdatingView {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 /*This if statement checks if we have reached the bottom of the listView*/
-                if(!view.canScrollList(View.SCROLL_AXIS_VERTICAL) && scrollState == SCROLL_STATE_IDLE) {
+                if(!view.canScrollList(View.SCROLL_AXIS_VERTICAL) && scrollState == SCROLL_STATE_IDLE && moreResults) {
                     try {
                         /*We request more results*/
                         Presenter.getInstance().action(new Context(Events.SEARCH_BY_NAME_AND_PAGE,
@@ -135,6 +140,9 @@ public class SearchActivity extends AppCompatActivity implements UpdatingView {
                     }
                     catch (ASException ex) {
                         ex.showMessage(SearchActivity.this);
+                        if (ex.getMessage().contains("No more results for")){
+                            moreResults = false;
+                        }
                     }
                 }
             }
@@ -168,7 +176,7 @@ public class SearchActivity extends AppCompatActivity implements UpdatingView {
                                 data.first);
                         mListView.setAdapter(adapter);
                         setTitle("Results for " + '"' + bufferedTitle + '"'); //Changes the title (for example: results for "Batman" )
-
+                        moreResults = true;
                     }
                     else { //We requested a new page
                         ((PreviewListAdapter) mListView.getAdapter()).
@@ -176,9 +184,8 @@ public class SearchActivity extends AppCompatActivity implements UpdatingView {
                     }
 
                     /*For debug and testing*/
-                    /*TODO find a better way to show this information (instead of just 'toasting' it)*/
-                    Toast.makeText(getApplicationContext(),
-                            "Page " + currentPage + " of " + data.second, Toast.LENGTH_LONG).show();
+
+                    numPages.setText("Loaded " + currentPage + (currentPage == 1 ? " page" : " pages") + " of " + data.second);
 
                     currentPage++;
                 }
@@ -188,6 +195,7 @@ public class SearchActivity extends AppCompatActivity implements UpdatingView {
                     fullfilmIntent.putExtra(FULL_FILM_FROM_SEARCHVIEW, (TFilmFull)resultData.getData()); //We set the film into the intent
                     startActivity(fullfilmIntent);
                 }
+
             }
         });
 

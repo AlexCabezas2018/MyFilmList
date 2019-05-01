@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".presentation.views.activities.SearchActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/numPages"
+        android:layout_marginBottom="0dp"
         android:orientation="vertical">
 
         <SearchView
@@ -21,17 +24,26 @@
             android:queryHint="@string/hint"
             android:visibility="visible"
             tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="16dp" >
+            tools:layout_editor_absoluteY="16dp">
 
         </SearchView>
 
         <ListView
             android:id="@+id/listView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="68dp" />
 
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/numPages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
+        android:text=""
+        android:textSize="24sp"
+        android:textAlignment="center" />
+</RelativeLayout>
