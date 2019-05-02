@@ -12,8 +12,7 @@ public class LoadReviewCommand implements Command {
 
     @Override
     public Context execute(Context inputData) throws ASException {
-        Pair<Activity, Integer> data = (Pair<Activity, Integer>) inputData.getData();
-        TReview review = ASReview.getInstance().loadReview(data);
+        TReview review = ASReview.getInstance().loadReview(inputData);
         return new Context(inputData.getEvent(), inputData.getActivity(), review);
     }
 }

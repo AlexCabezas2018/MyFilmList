@@ -5,6 +5,7 @@ import android.util.Pair;
 
 import com.example.myfilmlist.business.review.TReview;
 import com.example.myfilmlist.exceptions.DAOException;
+import com.example.myfilmlist.presentation.context.Context;
 
 /**
  * This class is used to access to a local database and store and load data
@@ -18,6 +19,6 @@ public abstract class DAOReview {
         return instance;
     }
 
-    public abstract void saveReview(Pair<Activity, TReview> review) throws DAOException;
-    public abstract TReview loadReview(Pair<Activity, Integer> toFind) throws DAOException;
+    public abstract void saveReview(Context reviewToSave) throws DAOException;
+    public abstract TReview loadReview(Context toFind) throws DAOException;
 }

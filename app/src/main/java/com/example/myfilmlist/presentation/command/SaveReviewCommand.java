@@ -11,8 +11,7 @@ import com.example.myfilmlist.presentation.context.Context;
 public class SaveReviewCommand implements Command {
     @Override
     public Context execute(Context inputData) throws ASException {
-        Pair<Activity, TReview> data = (Pair<Activity, TReview>) inputData.getData();
-        boolean toReturn = ASReview.getInstance().saveReview(data);
+        boolean toReturn = ASReview.getInstance().saveReview(inputData);
         return new Context(inputData.getEvent(), inputData.getActivity(), toReturn);
     }
 }

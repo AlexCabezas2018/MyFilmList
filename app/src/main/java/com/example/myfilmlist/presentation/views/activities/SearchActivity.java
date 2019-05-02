@@ -26,7 +26,7 @@ import com.example.myfilmlist.presentation.views.UpdatingView;
 
 import java.util.List;
 
-public class SearchActivity extends AppCompatActivity implements UpdatingView {
+public class SearchActivity extends UpdatingView {
 
     public static final String FULL_FILM_FROM_SEARCHVIEW = "FFFSV";
 

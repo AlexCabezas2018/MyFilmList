@@ -7,6 +7,7 @@ import com.example.myfilmlist.business.review.TReview;
 import com.example.myfilmlist.exceptions.ASException;
 import com.example.myfilmlist.exceptions.DAOException;
 import com.example.myfilmlist.integration.daoreview.DAOReview;
+import com.example.myfilmlist.presentation.context.Context;
 
 public class ASReviewImp extends ASReview {
 
@@ -16,10 +17,12 @@ public class ASReviewImp extends ASReview {
      * @throws ASException
      */
     @Override
-    public boolean saveReview(Pair<Activity, TReview> reviewToSave) throws ASException{
+    public boolean saveReview(Context reviewToSave) throws ASException{
         try {
-            if(reviewToSave.second.getContent().equals("")) throw new ASException("Content can't be empty!");
-            if(reviewToSave.second.getImdbId().equals("")) throw new ASException("Imdb id can't be empty!");
+            TReview toSave = (TReview) reviewToSave.getData();
+
+            if(toSave.getContent().equals("")) throw new ASException("Content can't be empty!");
+            if(toSave.getImdbId().equals("")) throw new ASException("Imdb id can't be empty!");
 
             DAOReview.getInstance().saveReview(reviewToSave);
             return true;
@@ -37,7 +40,7 @@ public class ASReviewImp extends ASReview {
      * @return TReview if the review exists
      */
     @Override
-    public TReview loadReview(Pair<Activity, Integer> reviewToLoad) throws ASException {
+    public TReview loadReview(Context reviewToLoad) throws ASException {
         TReview reviewToReturn;
         try {
             reviewToReturn = DAOReview.getInstance().loadReview(reviewToLoad);
