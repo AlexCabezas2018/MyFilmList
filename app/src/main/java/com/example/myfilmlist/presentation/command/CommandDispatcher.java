@@ -27,6 +27,9 @@ public class CommandDispatcher {
                 break;
             case REMOVE_REVIEW:
                 break;
+            case LOAD_REVIEW:
+                commandToReturn = new LoadReviewCommand();
+                break;
             case ADD_TO_FILMLIST:
                 break;
             case REMOVE_FROM_FILMLIST:

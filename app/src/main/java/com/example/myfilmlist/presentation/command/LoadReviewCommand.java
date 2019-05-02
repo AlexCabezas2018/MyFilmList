@@ -8,10 +8,11 @@ import com.example.myfilmlist.business.review.reviewappservice.ASReview;
 import com.example.myfilmlist.exceptions.ASException;
 import com.example.myfilmlist.presentation.context.Context;
 
-public class SaveReviewCommand implements Command {
+public class LoadReviewCommand implements Command {
+
     @Override
     public Context execute(Context inputData) throws ASException {
-        boolean toReturn = ASReview.getInstance().saveReview(inputData);
-        return new Context(inputData.getEvent(), inputData.getActivity(), toReturn);
+        TReview review = ASReview.getInstance().loadReview(inputData);
+        return new Context(inputData.getEvent(), inputData.getActivity(), review);
     }
 }
