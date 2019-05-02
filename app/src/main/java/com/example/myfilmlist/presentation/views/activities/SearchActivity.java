@@ -29,6 +29,7 @@ import java.util.List;
 public class SearchActivity extends AppCompatActivity implements UpdatingView {
 
     public static final String FULL_FILM_FROM_SEARCHVIEW = "FFFSV";
+    public static final String IMBD_ID_FROM_SEARCHVIEW = "IMDBIDFSV";
 
     private SearchView mSearchView;
     private ProgressDialog progressDialog;
@@ -37,6 +38,7 @@ public class SearchActivity extends AppCompatActivity implements UpdatingView {
     private String bufferedTitle;
     private TextView numPages;
     private Boolean moreResults;
+    private String imdbId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +112,7 @@ public class SearchActivity extends AppCompatActivity implements UpdatingView {
                     public void run() {
                         try{
                             TFilmPreview filmFull = (TFilmPreview) mListView.getAdapter().getItem(position); //We get the film we selected.
-                            String imdbId = filmFull.getImdbID(); //Gets the IMDB id. We will use it to find the film with full information.
+                            imdbId = filmFull.getImdbID(); //Gets the IMDB id. We will use it to find the film with full information.
                             Presenter.getInstance().action(new Context(Events.SEARCH_BY_IMDB_ID, SearchActivity.this, imdbId));
                         } catch (final ASException e) {
                             runOnUiThread(new Runnable() {
@@ -193,6 +195,7 @@ public class SearchActivity extends AppCompatActivity implements UpdatingView {
                 if(event == Events.SEARCH_BY_IMDB_ID){
                     Intent fullfilmIntent = new Intent(SearchActivity.this, FullFilmActivity.class);
                     fullfilmIntent.putExtra(FULL_FILM_FROM_SEARCHVIEW, (TFilmFull)resultData.getData()); //We set the film into the intent
+                    fullfilmIntent.putExtra(IMBD_ID_FROM_SEARCHVIEW, imdbId);
                     startActivity(fullfilmIntent);
                 }
 

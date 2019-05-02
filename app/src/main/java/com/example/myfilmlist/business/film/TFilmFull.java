@@ -11,13 +11,13 @@ public class TFilmFull implements Serializable {
     private String year;
     private String duration;
     private String directors;
-    private List<String> actors;
+    private String actors;
     private String plot;
 
     public TFilmFull() {};
 
     public TFilmFull(String title, String imageURL, String genre, String year,
-                     String duration, String directors, List<String> actors, String plot, String rate) {
+                     String duration, String directors, String actors, String plot, String rate) {
         this.title = title;
         this.imageURL = imageURL;
         this.genre = genre;
@@ -77,11 +77,9 @@ public class TFilmFull implements Serializable {
         this.directors = directors;
     }
 
-    public List<String> getActors() {
-        return actors;
-    }
+    public String getActors() { return actors;  }
 
-    public void setActors(List<String> actors) {
+    public void setActors(String actors) {
         this.actors = actors;
     }
 
