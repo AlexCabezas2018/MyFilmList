@@ -19,5 +19,5 @@ public abstract class ASReview {
     }
 
     public abstract boolean saveReview(Pair<Activity, TReview> reviewToSave) throws ASException;
-    public abstract TReview loadReview(int imdbId);
+    public abstract TReview loadReview(Pair<Activity, Integer> reviewToLoad) throws ASException;
 }

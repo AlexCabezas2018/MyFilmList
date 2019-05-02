@@ -19,5 +19,5 @@ public abstract class DAOReview {
     }
 
     public abstract void saveReview(Pair<Activity, TReview> review) throws DAOException;
-    public abstract TReview loadReview(int id);
+    public abstract TReview loadReview(Pair<Activity, Integer> toFind) throws DAOException;
 }

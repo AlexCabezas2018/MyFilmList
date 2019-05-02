@@ -18,21 +18,29 @@ public class DAOReviewImp extends DAOReview {
     @Override
     public void saveReview(final Pair<Activity, TReview> review) throws DAOException {
         try {
-            SQLiteHandlerReviews database = new SQLiteHandlerReviews(review.first, null, null, 1);
-            database.addReview(review.second);
+            SQLiteHandlerReviews database = new SQLiteHandlerReviews(review.first, null, null, 1); //Creating an instance to the database
+            database.addReview(review.second); //Invoke the add method
         } catch (SQLiteException exception) {
             throw new DAOException("There was an exception while saving the review (" + exception.getMessage() + ")");
         }
     }
 
+
     /**
-     * Loads a review given the imdbid
-     * @param imdbId
-     * @return
+     * Loads a review given the imdbid. Returns null if the product doesn't exists.
+     * @param toFind
+     * @return TReview
      */
     @Override
-    public TReview loadReview(int imdbId) {
-        return null;
+    public TReview loadReview(Pair<Activity, Integer> toFind) throws DAOException {
+        TReview toReturn;
+        try {
+            SQLiteHandlerReviews database = new SQLiteHandlerReviews(toFind.first, null, null, 1); //Creating an instance to the database
+            toReturn = database.getReviewFromIMDBId(toFind.second); //Invoke the get method.
+            return toReturn;
+        }
+        catch (DAOException | SQLiteException exception) {
+            throw new DAOException("There was an exception while saving the review (" + exception.getMessage() + ")");
+        }
     }
-
 }
