@@ -16,6 +16,7 @@
         <activity android:name=".presentation.views.activities.FullFilmActivity"></activity>
         <activity
             android:name=".presentation.views.activities.SearchActivity"
+            android:configChanges="orientation|screenSize|keyboard"
             android:label="@string/title_activity_seach" />
         <activity
             android:name=".presentation.views.activities.MainActivity"

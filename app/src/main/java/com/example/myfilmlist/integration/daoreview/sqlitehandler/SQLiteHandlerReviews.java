@@ -41,6 +41,7 @@ public class SQLiteHandlerReviews extends SQLiteOpenHelper {
 
     /**
      * Adds a new Review
+     * @param review
      */
     public void addReview(TReview review) {
         /* Setting up the values */
