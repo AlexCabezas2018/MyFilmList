@@ -25,16 +25,17 @@ public class FullFilmActivity extends AppCompatActivity {
         mWebView.setWebViewClient(new WebViewClient(){
             @Override
             public void onPageFinished (WebView view, String url){
-                view.evaluateJavascript("loadFilm('"+fullFilm.getTitle()+"','"
-                        +fullFilm.getYear()+"','"
-                        +fullFilm.getRate()+"','"
-                        +fullFilm.getImageURL()+"','"
-                        +fullFilm.getDuration()+"','"
-                        +fullFilm.getGenre()+"','"
-                        +fullFilm.getDirectors()+"','"
-                        +fullFilm.getActors()+"','"
-                        +fullFilm.getPlot()
-                        +"')", null);
+                String script = "loadFilm('"+
+                        fullFilm.getTitle()+"', '" +
+                        fullFilm.getYear()+"', '" +
+                        fullFilm.getRate()+"', '"+
+                        fullFilm.getImageURL()+"', '" +
+                        fullFilm.getDuration()+"', '"+
+                        fullFilm.getGenre()+"', '"+
+                        fullFilm.getDirectors()+"', '"+
+                        fullFilm.getActors()+"', '"+
+                        fullFilm.getPlot().replace("'", "´")+"')";
+                view.evaluateJavascript(script, null);
             }
         });
         mWebView.loadUrl("file:///android_asset/html/index.html");

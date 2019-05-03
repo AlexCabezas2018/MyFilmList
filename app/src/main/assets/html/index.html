@@ -1,33 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    </head>
-    <body>
-        <h1 id="title">Title</h1>
-        <p id="year">Year</p>
-        <p id="rate">Rate</p>
-        <img id="imageURL" src="" alt="">
-        <p id="duration">Duration</p>
-        <p id="genre">Genre</p>
-        <p id="directors">Directors</p>
-        <p id="actors">Actors</p>
-        <p id="plot">Plot</p>
-        <script type="text/javascript">
-            function loadFilm(title, year, rate, imageURL, duration, genre, directors, actors, plot) {
-                document.getElementById("title").innerHTML = title;
-                document.getElementById("year").innerHTML = year;
-                document.getElementById("rate").innerHTML = rate;
-                document.getElementById("imageURL").src = imageURL;
-                document.getElementById("imageURL").alt = title.concat(" Poster");
-                document.getElementById("duration").innerHTML = duration;
-                document.getElementById("genre").innerHTML = genre;
-                document.getElementById("directors").innerHTML = directors;
-                document.getElementById("actors").innerHTML = actors;
-                document.getElementById("plot").innerHTML = plot;
-            }
-        </script>
-    </body>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+</head>
+<body>
+    <div class="main-content">
+        <h1>
+            <span id="title">Title</span>
+            <span id="year">(Year)</span>
+        </h1>
+        <div class="main-info">
+            <div class="split">
+                <img id="imageURL" src="" alt="Poster">
+            </div>
+            <div class="split">
+                <div class="details">
+                    <dl>
+                        <dt>IMDb Rate</dt>
+                        <dd id="rate">Rate</dd>
+                        <dt>Duration</dt>
+                        <dd id="duration">Duration</dd>
+                        <dt>Genre</dt>
+                        <dd id="genre">Genre</dd>
+                    </dl>
+                    <a id="addViewButton" href="#">Add to views</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="more-info">
+        <dl>
+            <dt>Plot</dt>
+            <dd id="plot">Plot</dd>
+            <dt>Directors</dt>
+            <dd id="directors">Directors</dd>
+            <dt>Actors</dt>
+            <dd id="actors">Actors</dd>
+        </dl>
+    </div>
+    <hr>
+    <div class="review">
+        <a id="reviewButton" href="#">Make a review</a>
+    </div>
+    <script src="js/main.js"></script>
+</body>
 </html>
