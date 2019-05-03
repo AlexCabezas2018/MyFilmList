@@ -2,7 +2,8 @@ function loadFilm(title, year, rate, imageURL, duration, genre, directors, actor
     document.getElementById("title").innerHTML = title;
     document.getElementById("year").innerHTML = "("+year+")";
     document.getElementById("rate").innerHTML = rate;
-    document.getElementById("imageURL").src = imageURL;
+    if (imageURL != "N/A")
+        document.getElementById("imageURL").src = imageURL;
     document.getElementById("imageURL").alt = title.concat(" Poster");
     document.getElementById("duration").innerHTML = duration;
     document.getElementById("genre").innerHTML = genre;

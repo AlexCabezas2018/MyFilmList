@@ -26,14 +26,14 @@ public class FullFilmActivity extends AppCompatActivity {
             @Override
             public void onPageFinished (WebView view, String url){
                 String script = "loadFilm('"+
-                        fullFilm.getTitle()+"', '" +
+                        fullFilm.getTitle().replace("'", "´")+"', '" +
                         fullFilm.getYear()+"', '" +
                         fullFilm.getRate()+"', '"+
                         fullFilm.getImageURL()+"', '" +
                         fullFilm.getDuration()+"', '"+
-                        fullFilm.getGenre()+"', '"+
-                        fullFilm.getDirectors()+"', '"+
-                        fullFilm.getActors()+"', '"+
+                        fullFilm.getGenre().replace("'", "´")+"', '"+
+                        fullFilm.getDirectors().replace("'", "´")+"', '"+
+                        fullFilm.getActors().replace("'", "´")+"', '"+
                         fullFilm.getPlot().replace("'", "´")+"')";
                 view.evaluateJavascript(script, null);
             }

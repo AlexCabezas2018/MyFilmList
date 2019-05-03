@@ -43,11 +43,7 @@ public class PreviewListAdapter extends ArrayAdapter<TFilmPreview> {
 
         TFilmPreview film = films.get(position);
 
-        String prevTitle = film.getTitle();
-        if (prevTitle.length() > 50){
-            prevTitle = prevTitle.substring(0, 47).concat("...");
-        }
-        title.setText(prevTitle);
+        title.setText(film.getTitle());
         type.setText(film.getType());
         String prevYear = film.getYear();
         if (prevYear.endsWith("–")){
