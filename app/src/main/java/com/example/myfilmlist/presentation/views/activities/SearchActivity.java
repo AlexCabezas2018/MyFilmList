@@ -53,6 +53,7 @@ public class SearchActivity extends UpdatingView {
         numPages = findViewById(R.id.numPages);
         mListView = findViewById(R.id.listView);
         mSearchView = findViewById(R.id.titleSearch);
+        mSearchView.requestFocus();
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

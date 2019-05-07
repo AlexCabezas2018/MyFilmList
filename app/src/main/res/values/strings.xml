@@ -17,4 +17,5 @@
     <string name="title_activity_seach">Search</string>
     <string name="hint">Title of the film</string>
     <string name="posterDescription">film poster</string>
+    <string name="review_button">Add review</string>
 </resources>

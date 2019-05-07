@@ -24,7 +24,7 @@
                         <dt>Genre</dt>
                         <dd id="genre">Genre</dd>
                     </dl>
-                    <a id="addViewButton" href="#">Add to views</a>
+                    <button id="addViewButton" onclick="interface.addToViewsFromJS()">Add to views</button>
                 </div>
             </div>
         </div>
@@ -42,7 +42,7 @@
     </div>
     <hr>
     <div class="review">
-        <a id="reviewButton" href="#">Make a review</a>
+        <button id="reviewButton" onclick="interface.addReviewFromJS(document.getElementById('title').innerText)">Make a review</button>
     </div>
     <script src="js/main.js"></script>
 </body>
