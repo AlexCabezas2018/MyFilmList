@@ -30,6 +30,9 @@ public class CommandDispatcher {
             case LOAD_REVIEW:
                 commandToReturn = new LoadReviewCommand();
                 break;
+            case GET_ALL_VIEWED_FILMS:
+                commandToReturn = new GetAllViewedFilmsCommand();
+                break;
             case ADD_TO_FILMLIST:
                 break;
             case REMOVE_FROM_FILMLIST:

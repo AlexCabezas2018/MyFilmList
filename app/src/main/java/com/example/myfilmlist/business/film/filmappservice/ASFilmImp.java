@@ -7,6 +7,7 @@ import com.example.myfilmlist.business.film.TFilmPreview;
 import com.example.myfilmlist.exceptions.ASException;
 import com.example.myfilmlist.exceptions.DAOException;
 import com.example.myfilmlist.integration.daofilm.DAOFilm;
+import com.example.myfilmlist.presentation.context.Context;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -50,6 +51,27 @@ public class ASFilmImp extends ASFilm {
             else return filmsToReturn;
 
         } catch (DAOException | UnsupportedEncodingException exception) {
+            if(exception.getMessage().equals("Too many results.")) {
+                throw new ASException("The title is too short! Try some more!");
+            }
+            else throw new ASException(exception.getMessage());
+        }
+    }
+
+    /**
+     * It returns all the films that the user has marked as viewed in previous sessions.
+     * @param inputData
+     * @return
+     * @throws ASException
+     */
+    @Override
+    public List<TFilmPreview> getAllViewedFilms(Context inputData) throws ASException {
+        List<TFilmPreview> filmsToReturn;
+        try {
+            filmsToReturn = DAOFilm.getInstance().getAllViewedFilms(inputData);
+            return filmsToReturn;
+        }
+        catch (DAOException exception) {
             throw new ASException(exception.getMessage());
         }
     }

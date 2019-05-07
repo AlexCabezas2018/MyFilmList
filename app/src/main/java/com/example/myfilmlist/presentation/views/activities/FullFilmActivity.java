@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.example.myfilmlist.R;
 import com.example.myfilmlist.business.film.TFilmFull;
@@ -47,8 +48,18 @@ public class FullFilmActivity extends AppCompatActivity {
         mWebView.addJavascriptInterface(new JavaScriptInterface(), "interface");
         mWebView.loadUrl("file:///android_asset/html/index.html");
 
+        //TODO: Aquí se debería comprobar si ya existe una review para esa película (buscando por imdbid). Si existe, mostrar la review directamente, en lugar del boton.
+
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    protected void onResume() {
+        //TODO: Este método es llamado cada vez que la activity pasa a primer plano. Eso pasa cuando se escribe un review. Estaría bien que
+        // aquí se sustituyese el boton de "make a review" por la review. O eso o impedir que el usuario le de al boton
+
+        super.onResume();
     }
 
     @Override

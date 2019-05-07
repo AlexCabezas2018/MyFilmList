@@ -20,7 +20,7 @@ public class ASException extends Exception {
      * @param view
      */
     public void showMessage(Activity view) {
-        Toast.makeText(view, this.reason, Toast.LENGTH_LONG).show();
+        Toast.makeText(view, this.reason, (reason.length() > 30) ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT).show();
     }
 
 }

@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
-public class DAOFilmImp extends DAOFilm{
+public class DAOFilmImp extends DAOFilm {
 
     private static String OMDB_URL_NAME_AND_PAGE = "http://www.omdbapi.com/?s=¿&page=@&apikey=60b46c14"; //This is used to get more films (if there is a lot o results)
     private static String OMDB_URL_IMDB_ID = "http://www.omdbapi.com/?i=¿&apikey=60b46c14"; //This is used to search a film with the imdb id
@@ -55,7 +55,11 @@ public class DAOFilmImp extends DAOFilm{
                 throw new DAOException(exceptionResponse); //There was an exception
 
             String response = databaseResponse.getString("Response"); //We obtain the attribute "Response" from the JSON
-            if (response.equals("False")) return null; //That means there is no film with that name.
+            if (response.equals("False")) {
+                String error = databaseResponse.getString("Error");
+                if(error.equals("Movie not found!")) return null;
+                else throw new DAOException(error);
+            }
 
             filmToReturn = getFullFilmFromJSON(databaseResponse);
         }
@@ -102,16 +106,46 @@ public class DAOFilmImp extends DAOFilm{
                 throw new DAOException(exceptionResponse); //There was an exception
 
             String response = databaseResponse.getString("Response"); //We obtain the attribute "Response" from the JSON
-            if (response.equals("False")) return null; //That means there is no film with that name.
+            if (response.equals("False")) {
+                String error = databaseResponse.getString("Error");
+                if(error.equals("Movie not found!")) return null;
+                else throw new DAOException(error);
+            } //That means there is no film with that name.
 
             filmsToReturn = getPreviewFilmsFromJSON(databaseResponse);
 
         }
-        catch (DAOException | InterruptedException | JSONException exception) {
+        catch (InterruptedException | JSONException exception) {
             throw new DAOException("There was a problem while trying to get the film/s ("
                     + exception.getMessage() + ").");
         }
         return filmsToReturn;
+    }
+
+    /**
+     * Return all the viewed films of the user
+     * @param inputData
+     * @return
+     * @throws DAOException
+     */
+    @Override
+    public List<TFilmPreview> getAllViewedFilms(Context inputData) throws DAOException {
+        List<TFilmPreview> films;
+        try {
+            SQLiteHandlerViewedFilms database = new SQLiteHandlerViewedFilms(inputData.getActivity(), null, null, 1);
+            films = database.getAllViewedFilms();
+            return films;
+        }
+        catch (DAOException exception) {
+            throw new DAOException("There was a problem while trying to get the films/s (" + exception.getMessage() + ").");
+        }
+    }
+
+    @Override
+    public void addFilmToViewedFilms(TFilmPreview filmToAdd) throws DAOException {
+        //TODO implemetar método
+        //TODO implementar método en el SA
+        //TODO implementar método en presentacion
     }
 
 

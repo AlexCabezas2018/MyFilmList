@@ -1,4 +1,4 @@
-package com.example.myfilmlist.integration.daoreview.sqlitehandler;
+package com.example.myfilmlist.integration.daoreview;
 
 import android.content.ContentValues;
 import android.content.Context;

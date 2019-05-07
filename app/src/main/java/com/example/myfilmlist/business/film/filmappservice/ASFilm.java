@@ -5,6 +5,7 @@ import android.util.Pair;
 import com.example.myfilmlist.business.film.TFilmFull;
 import com.example.myfilmlist.business.film.TFilmPreview;
 import com.example.myfilmlist.exceptions.ASException;
+import com.example.myfilmlist.presentation.context.Context;
 
 import java.util.List;
 
@@ -25,4 +26,5 @@ public abstract class ASFilm {
 
     public abstract TFilmFull searchByIMDBId(String id) throws ASException;
     public abstract Pair<List<TFilmPreview>, String> searchByPage(Pair<String, Integer> nameAndPage) throws ASException;
+    public abstract List<TFilmPreview> getAllViewedFilms(Context inputData) throws ASException;
 }

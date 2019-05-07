@@ -1,12 +1,9 @@
 package com.example.myfilmlist.integration.daoreview;
 
-import android.app.Activity;
 import android.database.sqlite.SQLiteException;
-import android.util.Pair;
 
 import com.example.myfilmlist.business.review.TReview;
 import com.example.myfilmlist.exceptions.DAOException;
-import com.example.myfilmlist.integration.daoreview.sqlitehandler.SQLiteHandlerReviews;
 import com.example.myfilmlist.presentation.context.Context;
 
 public class DAOReviewImp extends DAOReview {
