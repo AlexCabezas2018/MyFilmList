@@ -1,5 +1,6 @@
 package com.example.myfilmlist.presentation.views.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -10,14 +11,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.myfilmlist.R;
+import com.example.myfilmlist.business.film.TFilmFull;
 import com.example.myfilmlist.business.film.TFilmPreview;
 import com.example.myfilmlist.exceptions.ASException;
-import com.example.myfilmlist.integration.daofilm.SQLiteHandlerViewedFilms;
 import com.example.myfilmlist.integration.utils.PreviewListAdapter;
 import com.example.myfilmlist.presentation.context.Context;
 import com.example.myfilmlist.presentation.events.Events;
@@ -30,15 +30,44 @@ import java.util.List;
 public class MainActivity extends UpdatingView
         implements NavigationView.OnNavigationItemSelectedListener {
 
-
-    ListView filmsViewed;
+    private ListView filmsViewed;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        progressDialog = new ProgressDialog(MainActivity.this);
+        progressDialog.setCancelable(true);
+        progressDialog.setMessage("Searching...");
+        progressDialog.setInverseBackgroundForced(true);
 
         filmsViewed = findViewById(R.id.main_list_view);
+        filmsViewed.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                progressDialog.show();
+                Thread taskThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+                            TFilmPreview filmFull = (TFilmPreview) filmsViewed.getAdapter().getItem(position); //We get the film we selected.
+                            String imdbId = filmFull.getImdbID(); //Gets the IMDB id. We will use it to find the film with full information.
+                            Presenter.getInstance().action(new Context(Events.SEARCH_BY_IMDB_ID, MainActivity.this, imdbId));
+                        } catch (final ASException e) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressDialog.dismiss();
+                                    e.showMessage(MainActivity.this);
+                                }
+                            });
+                        }
+                    }
+                });
+                taskThread.start();
+            }
+        });
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -97,20 +126,27 @@ public class MainActivity extends UpdatingView
 
     @Override
     public void update(Context resultData) {
-        PreviewListAdapter adapter = new PreviewListAdapter(MainActivity.this, R.layout.film_preview_layout,
-                new ArrayList<TFilmPreview>());
-        if(resultData.getData() != null) {
-            List<TFilmPreview> viewedFilms = (List<TFilmPreview>) resultData.getData();
-            adapter.addAll(viewedFilms);
-            filmsViewed.setAdapter(adapter);
+
+        if(resultData.getEvent() == Events.SEARCH_BY_IMDB_ID) {
+            progressDialog.dismiss();
+            Intent fullfilmIntent = new Intent(MainActivity.this, FullFilmActivity.class);
+            fullfilmIntent.putExtra(SearchActivity.FULL_FILM_FROM_SEARCHVIEW, (TFilmFull)resultData.getData()); //We set the film into the intent
+            startActivity(fullfilmIntent);
         }
-        else {
-            //TODO: Mejor forma de mostrar esto.
-            View view = getLayoutInflater().inflate(R.layout.empty_layout, null);
-            ViewGroup viewGroup= (ViewGroup) filmsViewed.getParent();
-            viewGroup.addView(view, viewGroup.getLayoutParams());
-            filmsViewed.setEmptyView(view);
-            filmsViewed.setAdapter(adapter);
+        else if(resultData.getEvent() == Events.GET_ALL_VIEWED_FILMS) {
+            PreviewListAdapter adapter = new PreviewListAdapter(MainActivity.this, R.layout.film_preview_layout,
+                    new ArrayList<TFilmPreview>());
+            if (resultData.getData() != null) {
+                List<TFilmPreview> viewedFilms = (List<TFilmPreview>) resultData.getData();
+                adapter.addAll(viewedFilms);
+                filmsViewed.setAdapter(adapter);
+            } else {
+                View view = getLayoutInflater().inflate(R.layout.empty_layout, null);
+                ViewGroup viewGroup = (ViewGroup) filmsViewed.getParent();
+                viewGroup.addView(view, viewGroup.getLayoutParams());
+                filmsViewed.setEmptyView(view);
+                filmsViewed.setAdapter(adapter);
+            }
         }
     }
 }

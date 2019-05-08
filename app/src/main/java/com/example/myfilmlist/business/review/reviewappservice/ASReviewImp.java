@@ -17,6 +17,7 @@ public class ASReviewImp extends ASReview {
     public boolean saveReview(Context reviewToSave) throws ASException{
         try {
             TReview toSave = (TReview) reviewToSave.getData();
+            //TODO comprobar que la review ya existe en la base de datos.
 
             if(toSave.getContent().equals("")) throw new ASException("Content can't be empty!");
             if(toSave.getImdbId().equals("")) throw new ASException("Imdb id can't be empty!");
