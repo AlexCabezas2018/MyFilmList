@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:descendantFocusability="blocksDescendants" >
 
 
     <ImageView
@@ -24,12 +25,13 @@
         android:layout_alignTop="@+id/posterPreview"
         android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="5dp"
+        android:layout_marginEnd="0dp"
+        android:layout_toStartOf="@+id/imageButtonAdd"
         android:layout_toEndOf="@+id/posterPreview"
-        android:text="@string/titlePreview"
-        android:textSize="24sp"
+        android:ellipsize="end"
         android:maxLines="2"
-        android:ellipsize="end"/>
+        android:text="@string/titlePreview"
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/yearPreview"
@@ -53,7 +55,7 @@
         android:text="@string/typePreview"
         android:textSize="24sp" />
 
-    <!-- Interfiere con el click de la lista
+
     <ImageButton
         android:id="@+id/imageButtonAdd"
         style="@android:style/Widget.Material.Button"
@@ -66,6 +68,6 @@
         android:background="@android:color/transparent"
         android:src="@drawable/ic_add"
         android:contentDescription="Add icon" />
-    -->
+
 
 </RelativeLayout>

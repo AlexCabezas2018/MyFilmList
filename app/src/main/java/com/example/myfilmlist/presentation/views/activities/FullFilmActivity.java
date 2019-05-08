@@ -1,5 +1,6 @@
 package com.example.myfilmlist.presentation.views.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,21 +12,29 @@ import android.widget.Toast;
 
 import com.example.myfilmlist.R;
 import com.example.myfilmlist.business.film.TFilmFull;
+import com.example.myfilmlist.business.film.TFilmPreview;
+import com.example.myfilmlist.business.review.TReview;
+import com.example.myfilmlist.exceptions.ASException;
+import com.example.myfilmlist.presentation.context.Context;
+import com.example.myfilmlist.presentation.events.Events;
+import com.example.myfilmlist.presentation.presenter.Presenter;
+import com.example.myfilmlist.presentation.views.UpdatingView;
 
-public class FullFilmActivity extends AppCompatActivity {
+public class FullFilmActivity extends UpdatingView {
 
     public static final String FILM_TITLE = "FTR";
     public static final String FILM_ID = "FID";
+    public static final int REVIEW = 1;
 
     private WebView mWebView;
     private TFilmFull fullFilm;
-    private String imdbid;
+
+    private Boolean reviewAdded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_full_film);
-        imdbid = (String) getIntent().getSerializableExtra(SearchActivity.IMBD_ID_FROM_SEARCHVIEW);
         mWebView = findViewById(R.id.webView);
         fullFilm = (TFilmFull) getIntent().getSerializableExtra(SearchActivity.FULL_FILM_FROM_SEARCHVIEW);
         mWebView.getSettings().setJavaScriptEnabled(true);
@@ -41,14 +50,20 @@ public class FullFilmActivity extends AppCompatActivity {
                         fullFilm.getGenre().replace("'", "´")+"', '"+
                         fullFilm.getDirectors().replace("'", "´")+"', '"+
                         fullFilm.getActors().replace("'", "´")+"', '"+
-                        fullFilm.getPlot().replace("'", "´")+"')";
+                        fullFilm.getPlot().replace("'", "´")+"', '"+
+                        fullFilm.getType()+"', '"+
+                        fullFilm.getImbdid()+"')";
                 view.evaluateJavascript(script, null);
+                try {
+                    Presenter.getInstance().action(new Context(Events.LOAD_REVIEW, FullFilmActivity.this, fullFilm.getImbdid()));
+                } catch (ASException e) {
+                    //e.showMessage(FullFilmActivity.this);
+                }
+
             }
         });
         mWebView.addJavascriptInterface(new JavaScriptInterface(), "interface");
         mWebView.loadUrl("file:///android_asset/html/index.html");
-
-        //TODO: Aquí se debería comprobar si ya existe una review para esa película (buscando por imdbid). Si existe, mostrar la review directamente, en lugar del boton.
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -56,9 +71,14 @@ public class FullFilmActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        //TODO: Este método es llamado cada vez que la activity pasa a primer plano. Eso pasa cuando se escribe un review. Estaría bien que
-        // aquí se sustituyese el boton de "make a review" por la review. O eso o impedir que el usuario le de al boton
-
+        //If the user just add a review, we search it in the database and update the view.
+        if (reviewAdded){
+            try {
+                Presenter.getInstance().action(new Context(Events.LOAD_REVIEW, FullFilmActivity.this, fullFilm.getImbdid()));
+            } catch (ASException e) {
+                e.showMessage(FullFilmActivity.this);
+            }
+        }
         super.onResume();
     }
 
@@ -82,20 +102,48 @@ public class FullFilmActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void update(Context resultData) {
+        Events event = resultData.getEvent();
+        if(event == Events.LOAD_REVIEW) {
+            if(resultData.getData() != null) {
+                TReview tReview = (TReview) resultData.getData();
+                mWebView.evaluateJavascript("loadReview('"+tReview.getContent().replace("'", "´")+"')", null);
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (REVIEW) : {
+                if (resultCode == Activity.RESULT_OK) {
+                    reviewAdded = data.getBooleanExtra(ReviewActivity.REVIEW_DONE, false);
+                }
+                break;
+            }
+        }
+    }
+
     private class JavaScriptInterface {
 
         @JavascriptInterface
-        public void addReviewFromJS(String title){
+        public void addReviewFromJS(String title, String imdbid){
             Intent reviewIntent = new Intent(FullFilmActivity.this, ReviewActivity.class);
             reviewIntent.putExtra(FILM_TITLE, title);
             reviewIntent.putExtra(FILM_ID, imdbid);
-            startActivity(reviewIntent);
+            startActivityForResult(reviewIntent, REVIEW);
         }
 
         @JavascriptInterface
-        public void addToViewsFromJS(){
-            Intent reviewIntent = new Intent(FullFilmActivity.this, FullFilmActivity.class);
-            startActivity(reviewIntent);
+        public void addToViewsFromJS(String title, String year, String filmID, String type, String imageURL){
+            try {
+                TFilmPreview filmPreview = new TFilmPreview(title, year, filmID, type, imageURL);
+                Presenter.getInstance().action(new Context(Events.ADD_TO_FILMLIST, FullFilmActivity.this, filmPreview));
+            } catch (ASException ex) {
+                ex.showMessage(FullFilmActivity.this);
+            }
         }
     }
 }

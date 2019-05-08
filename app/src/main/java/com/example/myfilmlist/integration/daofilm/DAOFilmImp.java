@@ -202,6 +202,8 @@ public class DAOFilmImp extends DAOFilm {
         filmToReturn.setActors(jsonObject.getString("Actors"));
         filmToReturn.setPlot(jsonObject.getString("Plot"));
         filmToReturn.setRate(jsonObject.getString("imdbRating"));
+        filmToReturn.setType(jsonObject.getString("Type"));
+        filmToReturn.setImbdid(jsonObject.getString("imdbID"));
 
         return filmToReturn;
     }

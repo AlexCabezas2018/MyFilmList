@@ -78,7 +78,8 @@ public class MainActivity extends UpdatingView
         int id = item.getItemId();
 
         if (id == R.id.nav_review) {
-            // Handle the camera action
+            Intent reviewIntent = new Intent(this, ReviewActivity.class);
+            startActivity(reviewIntent);
         } else if (id == R.id.nav_searchbyname) {
             Intent searchIntent = new Intent(this, SearchActivity.class);
             startActivity(searchIntent);
