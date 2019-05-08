@@ -18,5 +18,5 @@
     <string name="hint">Title of the film</string>
     <string name="posterDescription">film poster</string>
     <string name="review_button">Add review</string>
-    <string name="go_search_button">Go to seach by name</string>
+    <string name="go_search_button">Go to search by name</string>
 </resources>

@@ -1,8 +1,10 @@
 package com.example.myfilmlist.business.review.reviewappservice;
 
+import com.example.myfilmlist.business.film.TFilmPreview;
 import com.example.myfilmlist.business.review.TReview;
 import com.example.myfilmlist.exceptions.ASException;
 import com.example.myfilmlist.exceptions.DAOException;
+import com.example.myfilmlist.integration.daofilm.DAOFilm;
 import com.example.myfilmlist.integration.daoreview.DAOReview;
 import com.example.myfilmlist.presentation.context.Context;
 
@@ -17,10 +19,15 @@ public class ASReviewImp extends ASReview {
     public boolean saveReview(Context reviewToSave) throws ASException{
         try {
             TReview toSave = (TReview) reviewToSave.getData();
-            //TODO comprobar que la review ya existe en la base de datos.
 
             if(toSave.getContent().equals("")) throw new ASException("Content can't be empty!");
             if(toSave.getImdbId().equals("")) throw new ASException("Imdb id can't be empty!");
+
+            TReview checkIfDontExists = loadReview(new Context(reviewToSave.getEvent(), reviewToSave.getActivity(), toSave.getImdbId()));
+            if(checkIfDontExists != null) throw new ASException("There is a review for that film!");
+
+            // TODO: Comprobar que la pelicula ESTÁ EN LA LISTA DE VISTAS PARA PODER HACER LA REVIEW SOBRE ELLA
+
 
             DAOReview.getInstance().saveReview(reviewToSave);
             return true;
@@ -42,7 +49,7 @@ public class ASReviewImp extends ASReview {
         TReview reviewToReturn;
         try {
             reviewToReturn = DAOReview.getInstance().loadReview(reviewToLoad);
-            if(reviewToReturn == null) throw new ASException("The review doesn't exists");
+            if(reviewToReturn == null) return null;
             return reviewToReturn;
         }
         catch (DAOException exception) {

@@ -81,6 +81,7 @@ public class ReviewActivity extends UpdatingView {
             public void onClick(View v) {
                 Intent searchIntent = new Intent(ReviewActivity.this, SearchActivity.class);
                 startActivity(searchIntent);
+                finish();
             }
         });
 
@@ -103,13 +104,13 @@ public class ReviewActivity extends UpdatingView {
                         title.setText("Write a review for " + (String) parent.getItemAtPosition(position));
                         imbdid = viewedImbdids.get(position-1);
                     } else {
-                        title.setText("Select the film you want to comment");
+                        title.setText("Select a film to review!");
                     }
                 }
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
-                    title.setText("Select the film you want to comment");
+                    title.setText("Select a film to review!");
                 }
             });
         }
@@ -165,7 +166,7 @@ public class ReviewActivity extends UpdatingView {
                 }
             }
             else {
-                title.setText("No films added");
+                title.setText("No films viewed!");
                 viewedSelect.setVisibility(View.GONE);
                 reviewButton.setVisibility(View.GONE);
                 reviewText.setVisibility(View.GONE);

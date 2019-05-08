@@ -145,7 +145,6 @@ public class DAOFilmImp extends DAOFilm {
 
     @Override
     public void addFilmToViewedFilms(Activity act, TFilmPreview filmToAdd) throws DAOException {
-        //TODO implemetar método
         try{
             SQLiteHandlerViewedFilms database = new SQLiteHandlerViewedFilms(act, null, null, 1);
             database.insertFilm(filmToAdd);
@@ -153,9 +152,6 @@ public class DAOFilmImp extends DAOFilm {
         catch (SQLiteException exception) {
             throw new DAOException("Problem while adding a film to the viewed ones ( " + exception.getMessage() + " ).");
         }
-
-        //TODO implementar método en el SA
-        //TODO implementar método en presentacion
     }
 
 

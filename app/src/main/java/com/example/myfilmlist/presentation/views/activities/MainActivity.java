@@ -32,11 +32,13 @@ public class MainActivity extends UpdatingView
 
     private ListView filmsViewed;
     private ProgressDialog progressDialog;
+    private View emptyView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         progressDialog = new ProgressDialog(MainActivity.this);
         progressDialog.setCancelable(true);
         progressDialog.setMessage("Searching...");
@@ -68,6 +70,11 @@ public class MainActivity extends UpdatingView
                 taskThread.start();
             }
         });
+
+        emptyView = getLayoutInflater().inflate(R.layout.empty_layout, null);
+        ViewGroup viewGroup = (ViewGroup) filmsViewed.getParent();
+        viewGroup.addView(emptyView, viewGroup.getLayoutParams());
+        filmsViewed.setEmptyView(emptyView);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -139,12 +146,11 @@ public class MainActivity extends UpdatingView
             if (resultData.getData() != null) {
                 List<TFilmPreview> viewedFilms = (List<TFilmPreview>) resultData.getData();
                 adapter.addAll(viewedFilms);
+                emptyView.setVisibility(View.GONE);
                 filmsViewed.setAdapter(adapter);
+
             } else {
-                View view = getLayoutInflater().inflate(R.layout.empty_layout, null);
-                ViewGroup viewGroup = (ViewGroup) filmsViewed.getParent();
-                viewGroup.addView(view, viewGroup.getLayoutParams());
-                filmsViewed.setEmptyView(view);
+                emptyView.setVisibility(View.VISIBLE);
                 filmsViewed.setAdapter(adapter);
             }
         }

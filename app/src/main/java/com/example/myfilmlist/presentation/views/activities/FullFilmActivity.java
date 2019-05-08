@@ -2,7 +2,6 @@ package com.example.myfilmlist.presentation.views.activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.webkit.JavascriptInterface;
@@ -103,17 +102,6 @@ public class FullFilmActivity extends UpdatingView {
     }
 
     @Override
-    public void update(Context resultData) {
-        Events event = resultData.getEvent();
-        if(event == Events.LOAD_REVIEW) {
-            if(resultData.getData() != null) {
-                TReview tReview = (TReview) resultData.getData();
-                mWebView.evaluateJavascript("loadReview('"+tReview.getContent().replace("'", "´")+"')", null);
-            }
-        }
-    }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
@@ -138,12 +126,28 @@ public class FullFilmActivity extends UpdatingView {
 
         @JavascriptInterface
         public void addToViewsFromJS(String title, String year, String filmID, String type, String imageURL){
+            /*TODO: Mucho ojo aquí. Por alguna razón la url en este método es " ", cuando he comprobado que cuando accede a la actividad, el campo de la url no está vacio. Por esa razón, la lista de vista no muestra correctamente las imágenes.*/
+
             try {
                 TFilmPreview filmPreview = new TFilmPreview(title, year, filmID, type, imageURL);
                 Presenter.getInstance().action(new Context(Events.ADD_TO_FILMLIST, FullFilmActivity.this, filmPreview));
             } catch (ASException ex) {
                 ex.showMessage(FullFilmActivity.this);
             }
+        }
+    }
+
+
+    @Override
+    public void update(Context resultData) {
+        Events event = resultData.getEvent();
+        if(event == Events.LOAD_REVIEW) {
+            if(resultData.getData() != null) {
+                TReview tReview = (TReview) resultData.getData();
+                mWebView.evaluateJavascript("loadReview('"+tReview.getContent().replace("'", "´")+"')", null);
+            }
+        }
+        else if(event == Events.ADD_TO_FILMLIST) {
             Toast.makeText(getApplicationContext(), "Film added successfully!", Toast.LENGTH_SHORT).show();
             finish();
         }

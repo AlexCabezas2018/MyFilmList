@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.myfilmlist.business.film.TFilmPreview;
@@ -46,24 +47,39 @@ public class SQLiteHandlerViewedFilms extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public boolean isFilmInDB(String idGiven) {
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_IMDB_ID + "== '" + idGiven + "';"; //This query returns everything from the table.
+
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor filmsCursor = db.rawQuery(query, null); //getting a cursor from the query
+        filmsCursor.moveToFirst();
+
+        if(filmsCursor.getCount() == 0) return false; //It's not in the database
+        else return true; //It is on the database
+    }
+
 
     /**
      * Adds a film to the viewed ones.
      * @param filmToInsert
      */
-    public void insertFilm(TFilmPreview filmToInsert) {
+    public void insertFilm(TFilmPreview filmToInsert) throws DAOException {
         /*  Setting up the values to insert into de database  */
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_IMDB_ID, filmToInsert.getImdbID());
-        values.put(COLUMN_TITLE, filmToInsert.getTitle());
-        values.put(COLUMN_TYPE, filmToInsert.getType());
-        values.put(COLUMN_YEAR, filmToInsert.getYear());
-        values.put(COLUMN_IMG_URL, filmToInsert.getImageURL());
+        boolean checkIfNotExists = isFilmInDB(filmToInsert.getImdbID());
+        if(!checkIfNotExists) { //If the review not exists...
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_IMDB_ID, filmToInsert.getImdbID());
+            values.put(COLUMN_TITLE, filmToInsert.getTitle());
+            values.put(COLUMN_TYPE, filmToInsert.getType());
+            values.put(COLUMN_YEAR, filmToInsert.getYear());
+            values.put(COLUMN_IMG_URL, filmToInsert.getImageURL());
 
 
-        SQLiteDatabase database = getWritableDatabase();
-        database.insert(TABLE_NAME, null, values); //Inserting the values.
-        database.close(); //Closes the instance to the database
+            SQLiteDatabase database = getWritableDatabase();
+            database.insert(TABLE_NAME, null, values); //Inserting the values.
+            database.close(); //Closes the instance to the database
+        }
+        else throw new DAOException("The film has already seen!");
     }
 
     /**
