@@ -75,4 +75,14 @@ public class ASFilmImp extends ASFilm {
             throw new ASException(exception.getMessage());
         }
     }
+
+    @Override
+    public void addViewedFilm(Context inputData) throws ASException {
+        try{
+            DAOFilm.getInstance().addFilmToViewedFilms(inputData.getActivity(), (TFilmPreview) inputData.getData());
+        }
+        catch (DAOException exception) {
+            throw new ASException(exception.getMessage());
+        }
+    }
 }

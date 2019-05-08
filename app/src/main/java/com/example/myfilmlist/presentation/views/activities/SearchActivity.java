@@ -9,9 +9,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myfilmlist.R;
 import com.example.myfilmlist.business.film.TFilmFull;
@@ -156,6 +158,7 @@ public class SearchActivity extends UpdatingView {
             }
         });
 
+
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -196,7 +199,6 @@ public class SearchActivity extends UpdatingView {
                 if(event == Events.SEARCH_BY_IMDB_ID){
                     Intent fullfilmIntent = new Intent(SearchActivity.this, FullFilmActivity.class);
                     fullfilmIntent.putExtra(FULL_FILM_FROM_SEARCHVIEW, (TFilmFull)resultData.getData()); //We set the film into the intent
-                    fullfilmIntent.putExtra(IMBD_ID_FROM_SEARCHVIEW, imdbId);
                     startActivity(fullfilmIntent);
                 }
 

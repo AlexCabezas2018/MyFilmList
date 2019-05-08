@@ -34,11 +34,11 @@ public class DAOReviewImp extends DAOReview {
         TReview toReturn;
         try {
             SQLiteHandlerReviews database = new SQLiteHandlerReviews(toFind.getActivity(), null, null, 1); //Creating an instance to the database
-            toReturn = database.getReviewFromIMDBId((Integer) toFind.getData()); //Invoke the get method.
+            toReturn = database.getReviewFromIMDBId((String) toFind.getData()); //Invoke the get method.
             return toReturn;
         }
         catch (DAOException | SQLiteException exception) {
-            throw new DAOException("There was an exception while saving the review (" + exception.getMessage() + ")");
+            throw new DAOException("There was an exception while loading the review (" + exception.getMessage() + ")");
         }
     }
 }

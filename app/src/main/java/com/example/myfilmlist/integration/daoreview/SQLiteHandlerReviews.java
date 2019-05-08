@@ -63,9 +63,9 @@ public class SQLiteHandlerReviews extends SQLiteOpenHelper {
      * @return
      * @throws DAOException
      */
-    public TReview getReviewFromIMDBId(int imdb) throws DAOException {
+    public TReview getReviewFromIMDBId(String imdb) throws DAOException {
         TReview toReturn = new TReview();
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_IMDB_ID + " == " + imdb; //Query: Obtain everything from the table where the imdbid is equals to the given one.
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_IMDB_ID + " == " + "'"+imdb+"'"; //Query: Obtain everything from the table where the imdbid is equals to the given one.
 
         SQLiteDatabase db = getWritableDatabase();
         Cursor reviewCursor = db.rawQuery(query, null); //Execute the query and generate a cursor, which goes through all the results
