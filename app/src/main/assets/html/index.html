@@ -24,7 +24,8 @@
                         <dt>Genre</dt>
                         <dd id="genre">Genre</dd>
                     </dl>
-                    <button id="addViewButton" onclick="interface.addToViewsFromJS()">Add to views</button>
+                    <p id="added">Already added</p>
+                    <button id="addViewButton" onclick="interface.addToViewsFromJS(document.getElementById('title').innerText, document.getElementById('year').innerText, document.getElementById('filmId').innerText, document.getElementById('type').innerText, document.getElementById('imageURL').innerText)">Add to views</button>
                 </div>
             </div>
         </div>
@@ -41,9 +42,15 @@
         </dl>
     </div>
     <hr>
-    <div class="review">
-        <button id="reviewButton" onclick="interface.addReviewFromJS(document.getElementById('title').innerText)">Make a review</button>
+    <div class="review-info">
+        <button id="reviewButton" onclick="interface.addReviewFromJS(document.getElementById('title').innerText, document.getElementById('filmId').innerText)">Make a review</button>
+        <dl id="review">
+            <dt>Review</dt>
+            <dd id="reviewText">Review Text</dd>
+        </dl>
     </div>
+    <span id="type">Type</span>
+    <span id="filmId">filmId</span>
     <script src="js/main.js"></script>
 </body>
 </html>
