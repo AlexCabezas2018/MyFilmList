@@ -1,5 +1,6 @@
 package com.example.myfilmlist.integration.daofilm;
 
+import android.app.Activity;
 import android.util.Pair;
 
 import com.example.myfilmlist.business.film.TFilmFull;
@@ -28,6 +29,6 @@ public abstract class DAOFilm {
     public abstract TFilmFull getFilmByIMDBId(String id) throws DAOException;
     public abstract Pair<List<TFilmPreview>, String> getFilmsFromNextPage(Pair<String, Integer> inputInformation) throws DAOException;
     public abstract List<TFilmPreview> getAllViewedFilms(Context inputData) throws DAOException;
-    public abstract void addFilmToViewedFilms(TFilmPreview filmToAdd) throws DAOException;
+    public abstract void addFilmToViewedFilms(Activity act, TFilmPreview filmToAdd) throws DAOException;
 
 }

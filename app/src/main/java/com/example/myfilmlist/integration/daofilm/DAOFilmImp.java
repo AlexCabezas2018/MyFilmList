@@ -1,5 +1,7 @@
 package com.example.myfilmlist.integration.daofilm;
 
+import android.app.Activity;
+import android.database.sqlite.SQLiteException;
 import android.util.Pair;
 
 import com.example.myfilmlist.business.film.TFilmFull;
@@ -142,8 +144,16 @@ public class DAOFilmImp extends DAOFilm {
     }
 
     @Override
-    public void addFilmToViewedFilms(TFilmPreview filmToAdd) throws DAOException {
+    public void addFilmToViewedFilms(Activity act, TFilmPreview filmToAdd) throws DAOException {
         //TODO implemetar método
+        try{
+            SQLiteHandlerViewedFilms database = new SQLiteHandlerViewedFilms(act, null, null, 1);
+            database.insertFilm(filmToAdd);
+        }
+        catch (SQLiteException exception) {
+            throw new DAOException("Problem while adding a film to the viewed ones ( " + exception.getMessage() + " ).");
+        }
+
         //TODO implementar método en el SA
         //TODO implementar método en presentacion
     }

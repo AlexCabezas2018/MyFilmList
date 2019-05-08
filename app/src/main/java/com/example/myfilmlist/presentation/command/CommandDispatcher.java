@@ -34,6 +34,7 @@ public class CommandDispatcher {
                 commandToReturn = new GetAllViewedFilmsCommand();
                 break;
             case ADD_TO_FILMLIST:
+                commandToReturn = new AddFilmToViewedFilmsCommand();
                 break;
             case REMOVE_FROM_FILMLIST:
                 break;
