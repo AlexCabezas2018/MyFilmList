@@ -57,7 +57,7 @@ public class ReviewActivity extends UpdatingView {
             @Override
             public void onClick(View v) {
                 String error = isValidReview(reviewText.getText().toString());
-                if (error != "") {
+                if (!error.equals("")) {
                     reviewText.setError(error);
                 } else {
                     try {
