@@ -144,6 +144,8 @@ public class FullFilmActivity extends UpdatingView {
             } catch (ASException ex) {
                 ex.showMessage(FullFilmActivity.this);
             }
+            Toast.makeText(getApplicationContext(), "Film added successfully!", Toast.LENGTH_SHORT).show();
+            finish();
         }
     }
 }
