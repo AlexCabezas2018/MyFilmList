@@ -8,6 +8,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,6 +24,7 @@ import com.example.myfilmlist.presentation.events.Events;
 import com.example.myfilmlist.presentation.presenter.Presenter;
 import com.example.myfilmlist.presentation.views.UpdatingView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends UpdatingView
@@ -92,16 +96,20 @@ public class MainActivity extends UpdatingView
 
     @Override
     public void update(Context resultData) {
-
+        PreviewListAdapter adapter = new PreviewListAdapter(MainActivity.this, R.layout.film_preview_layout,
+                new ArrayList<TFilmPreview>());
         if(resultData.getData() != null) {
             List<TFilmPreview> viewedFilms = (List<TFilmPreview>) resultData.getData();
-            PreviewListAdapter adapter = new PreviewListAdapter(MainActivity.this, R.layout.film_preview_layout,
-                    viewedFilms);
+            adapter.addAll(viewedFilms);
             filmsViewed.setAdapter(adapter);
         }
         else {
             //TODO: Mejor forma de mostrar esto.
-            Toast.makeText(getApplicationContext(), "NO FILMS!", Toast.LENGTH_SHORT).show();
+            View view = getLayoutInflater().inflate(R.layout.empty_layout, null);
+            ViewGroup viewGroup= (ViewGroup) filmsViewed.getParent();
+            viewGroup.addView(view, viewGroup.getLayoutParams());
+            filmsViewed.setEmptyView(view);
+            filmsViewed.setAdapter(adapter);
         }
     }
 }
