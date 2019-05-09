@@ -47,8 +47,13 @@ public class SQLiteHandlerViewedFilms extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    /**
+     * Returns if the film exists in the table.
+     * @param idGiven
+     * @return
+     */
     public boolean isFilmInDB(String idGiven) {
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_IMDB_ID + "== '" + idGiven + "';"; //This query returns everything from the table.
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_IMDB_ID + "== '" + idGiven + "';"; //This query
 
         SQLiteDatabase db = getWritableDatabase();
         Cursor filmsCursor = db.rawQuery(query, null); //getting a cursor from the query

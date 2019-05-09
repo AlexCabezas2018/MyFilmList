@@ -3,13 +3,11 @@ package com.example.myfilmlist.presentation.views.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -19,8 +17,8 @@ import com.example.myfilmlist.R;
 import com.example.myfilmlist.business.film.TFilmFull;
 import com.example.myfilmlist.business.film.TFilmPreview;
 import com.example.myfilmlist.exceptions.ASException;
-import com.example.myfilmlist.integration.utils.PreviewListAdapter;
 import com.example.myfilmlist.integration.utils.InternetUtils;
+import com.example.myfilmlist.integration.utils.PreviewListAdapter;
 import com.example.myfilmlist.presentation.context.Context;
 import com.example.myfilmlist.presentation.events.Events;
 import com.example.myfilmlist.presentation.presenter.Presenter;
@@ -31,7 +29,6 @@ import java.util.List;
 public class SearchActivity extends UpdatingView {
 
     public static final String FULL_FILM_FROM_SEARCHVIEW = "FFFSV";
-    public static final String IMBD_ID_FROM_SEARCHVIEW = "IMDBIDFSV";
 
     private SearchView mSearchView;
     private ProgressDialog progressDialog;
@@ -41,6 +38,8 @@ public class SearchActivity extends UpdatingView {
     private TextView numPages;
     private Boolean moreResults;
     private String imdbId;
+
+    private PreviewListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,7 +177,7 @@ public class SearchActivity extends UpdatingView {
                 if(event == Events.SEARCH_BY_NAME_AND_PAGE) {
                     Pair<List<TFilmPreview>, String> data = (Pair<List<TFilmPreview>, String>) resultData.getData();
                     if(currentPage == 1) { //Which means that is a new searching result
-                        PreviewListAdapter adapter = new PreviewListAdapter(SearchActivity.this, R.layout.film_preview_layout,
+                        adapter = new PreviewListAdapter(SearchActivity.this, R.layout.film_preview_layout,
                                 data.first);
                         mListView.setAdapter(adapter);
                         setTitle("Results for " + '"' + bufferedTitle + '"'); //Changes the title (for example: results for "Batman" )
@@ -200,6 +199,16 @@ public class SearchActivity extends UpdatingView {
                     Intent fullfilmIntent = new Intent(SearchActivity.this, FullFilmActivity.class);
                     fullfilmIntent.putExtra(FULL_FILM_FROM_SEARCHVIEW, (TFilmFull)resultData.getData()); //We set the film into the intent
                     startActivity(fullfilmIntent);
+                }
+
+                if(event == Events.ADD_TO_FILMLIST) {
+                    Toast.makeText(getApplicationContext(), "Film added successfully!", Toast.LENGTH_SHORT).show();
+                }
+
+                if (event == Events.IS_FILM_IN_DB){
+                    if ((boolean) resultData.getData()) {
+
+                    }
                 }
 
             }

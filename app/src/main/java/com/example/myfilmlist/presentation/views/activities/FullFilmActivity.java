@@ -51,12 +51,17 @@ public class FullFilmActivity extends UpdatingView {
                         fullFilm.getActors().replace("'", "´")+"', '"+
                         fullFilm.getPlot().replace("'", "´")+"', '"+
                         fullFilm.getType()+"', '"+
-                        fullFilm.getImbdid()+"')";
+                        fullFilm.getImbdid()+"');";
                 view.evaluateJavascript(script, null);
                 try {
                     Presenter.getInstance().action(new Context(Events.LOAD_REVIEW, FullFilmActivity.this, fullFilm.getImbdid()));
                 } catch (ASException e) {
                     //e.showMessage(FullFilmActivity.this);
+                }
+                try {
+                    Presenter.getInstance().action(new Context(Events.IS_FILM_IN_DB, FullFilmActivity.this, fullFilm.getImbdid()));
+                } catch (ASException e) {
+                  //  e.printStackTrace();
                 }
 
             }
@@ -126,8 +131,6 @@ public class FullFilmActivity extends UpdatingView {
 
         @JavascriptInterface
         public void addToViewsFromJS(String title, String year, String filmID, String type, String imageURL){
-            /*TODO: Mucho ojo aquí. Por alguna razón la url en este método es " ", cuando he comprobado que cuando accede a la actividad, el campo de la url no está vacio. Por esa razón, la lista de vista no muestra correctamente las imágenes.*/
-
             try {
                 TFilmPreview filmPreview = new TFilmPreview(title, year, filmID, type, imageURL);
                 Presenter.getInstance().action(new Context(Events.ADD_TO_FILMLIST, FullFilmActivity.this, filmPreview));
@@ -144,13 +147,18 @@ public class FullFilmActivity extends UpdatingView {
         if(event == Events.LOAD_REVIEW) {
             if(resultData.getData() != null) {
                 TReview tReview = (TReview) resultData.getData();
-                mWebView.evaluateJavascript("loadReview('"+tReview.getContent().replace("'", "´")+"')", null);
+                mWebView.evaluateJavascript("loadReview('"+tReview.getContent().replace("'", "´")+"');", null);
             }
         }
-        else if(event == Events.ADD_TO_FILMLIST) {
-            Toast.makeText(getApplicationContext(), "Film added successfully!", Toast.LENGTH_SHORT).show();
-            finish();
+        if (event == Events.IS_FILM_IN_DB){
+            if ((boolean) resultData.getData()) {
+                mWebView.evaluateJavascript("addViewed();", null);
+            }
         }
+        if(event == Events.ADD_TO_FILMLIST) {
+            Toast.makeText(getApplicationContext(), "Film added successfully!", Toast.LENGTH_SHORT).show();
+        }
+
     }
 }
 

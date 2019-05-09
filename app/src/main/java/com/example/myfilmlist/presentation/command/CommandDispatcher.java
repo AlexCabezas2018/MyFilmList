@@ -36,6 +36,9 @@ public class CommandDispatcher {
             case ADD_TO_FILMLIST:
                 commandToReturn = new AddFilmToViewedFilmsCommand();
                 break;
+            case IS_FILM_IN_DB:
+                commandToReturn = new IsFilmInDB();
+                break;
             case REMOVE_FROM_FILMLIST:
                 break;
             case REFRESH_FILM_LIST:

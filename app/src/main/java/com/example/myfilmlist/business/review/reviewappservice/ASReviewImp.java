@@ -26,8 +26,7 @@ public class ASReviewImp extends ASReview {
             TReview checkIfDontExists = loadReview(new Context(reviewToSave.getEvent(), reviewToSave.getActivity(), toSave.getImdbId()));
             if(checkIfDontExists != null) throw new ASException("There is a review for that film!");
 
-            // TODO: Comprobar que la pelicula ESTÁ EN LA LISTA DE VISTAS PARA PODER HACER LA REVIEW SOBRE ELLA
-
+            if (!DAOFilm.getInstance().isFilmInDB(reviewToSave.getActivity(), toSave.getImdbId())) throw new ASException("You nedd to view the film first!");
 
             DAOReview.getInstance().saveReview(reviewToSave);
             return true;

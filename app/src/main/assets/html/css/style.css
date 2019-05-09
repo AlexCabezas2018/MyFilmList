@@ -76,3 +76,8 @@ dt {
 #type, #filmId, #review, #added {
     display: none;
 }
+
+#added {
+    font-size: 1.5em;
+    font-weight: bold;
+}

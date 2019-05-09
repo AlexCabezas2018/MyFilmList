@@ -19,4 +19,6 @@
     <string name="posterDescription">film poster</string>
     <string name="review_button">Add review</string>
     <string name="go_search_button">Go to search by name</string>
+    <string name="no_films_tag">No films added, try to add one!</string>
+    <string name="no_films_logo">No films logo</string>
 </resources>

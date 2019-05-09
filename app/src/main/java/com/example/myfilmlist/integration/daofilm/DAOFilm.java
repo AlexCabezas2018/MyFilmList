@@ -30,5 +30,6 @@ public abstract class DAOFilm {
     public abstract Pair<List<TFilmPreview>, String> getFilmsFromNextPage(Pair<String, Integer> inputInformation) throws DAOException;
     public abstract List<TFilmPreview> getAllViewedFilms(Context inputData) throws DAOException;
     public abstract void addFilmToViewedFilms(Activity act, TFilmPreview filmToAdd) throws DAOException;
+    public abstract boolean isFilmInDB(Activity act,String idGiven);
 
 }

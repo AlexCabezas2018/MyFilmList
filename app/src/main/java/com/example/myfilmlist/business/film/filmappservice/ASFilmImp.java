@@ -33,7 +33,6 @@ public class ASFilmImp extends ASFilm {
         }
     }
 
-
     /**
      * Given a string and a page number, it returns the films in the indicated page and the number of available pages.
      * @param nameAndPage
@@ -84,5 +83,10 @@ public class ASFilmImp extends ASFilm {
         catch (DAOException exception) {
             throw new ASException(exception.getMessage());
         }
+    }
+
+    @Override
+    public boolean isFilmInDB(Context inputData){
+        return DAOFilm.getInstance().isFilmInDB(inputData.getActivity(), inputData.getData().toString());
     }
 }

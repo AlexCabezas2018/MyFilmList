@@ -25,7 +25,7 @@
                         <dd id="genre">Genre</dd>
                     </dl>
                     <p id="added">Already added</p>
-                    <button id="addViewButton" onclick="interface.addToViewsFromJS(document.getElementById('title').innerText, document.getElementById('year').innerText, document.getElementById('filmId').innerText, document.getElementById('type').innerText, document.getElementById('imageURL').innerText)">Add to views</button>
+                    <button id="addViewButton" onclick="document.getElementById('added').style.display = 'block';document.getElementById('addViewButton').style.display = 'none';interface.addToViewsFromJS(document.getElementById('title').innerText, document.getElementById('year').innerText, document.getElementById('filmId').innerText, document.getElementById('type').innerText, document.getElementById('imageURL').src)">Add to views</button>
                 </div>
             </div>
         </div>

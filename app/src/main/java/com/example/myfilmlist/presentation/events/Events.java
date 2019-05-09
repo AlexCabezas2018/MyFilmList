@@ -14,4 +14,5 @@ public enum Events {
     ADD_TO_FILMLIST,
     REMOVE_FROM_FILMLIST,
     REFRESH_FILM_LIST,
+    IS_FILM_IN_DB
 }

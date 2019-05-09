@@ -154,6 +154,11 @@ public class DAOFilmImp extends DAOFilm {
         }
     }
 
+    @Override
+    public boolean isFilmInDB(Activity act,String idGiven) {
+        SQLiteHandlerViewedFilms database = new SQLiteHandlerViewedFilms(act, null, null, 1);
+        return database.isFilmInDB(idGiven);
+    }
 
     /*  UTILS  */
 

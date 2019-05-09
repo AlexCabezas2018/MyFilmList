@@ -141,7 +141,7 @@ public class MainActivity extends UpdatingView
             startActivity(fullfilmIntent);
         }
         else if(resultData.getEvent() == Events.GET_ALL_VIEWED_FILMS) {
-            PreviewListAdapter adapter = new PreviewListAdapter(MainActivity.this, R.layout.film_preview_layout,
+            PreviewListAdapter adapter = new PreviewListAdapter(this, R.layout.film_preview_layout,
                     new ArrayList<TFilmPreview>());
             if (resultData.getData() != null) {
                 List<TFilmPreview> viewedFilms = (List<TFilmPreview>) resultData.getData();
