@@ -59,8 +59,17 @@ public class SQLiteHandlerViewedFilms extends SQLiteOpenHelper {
         Cursor filmsCursor = db.rawQuery(query, null); //getting a cursor from the query
         filmsCursor.moveToFirst();
 
-        if(filmsCursor.getCount() == 0) return false; //It's not in the database
-        else return true; //It is on the database
+        if(filmsCursor.getCount() == 0) {
+            filmsCursor.close();
+            db.close();
+            return false; //It's not in the database
+        }
+        else{
+            filmsCursor.close();
+            db.close();
+            return true;
+        }
+        //It is on the database
     }
 
 

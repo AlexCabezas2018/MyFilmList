@@ -18,7 +18,7 @@ import com.example.myfilmlist.R;
 import com.example.myfilmlist.business.film.TFilmFull;
 import com.example.myfilmlist.business.film.TFilmPreview;
 import com.example.myfilmlist.exceptions.ASException;
-import com.example.myfilmlist.integration.utils.PreviewListAdapter;
+import com.example.myfilmlist.presentation.utils.PreviewListAdapter;
 import com.example.myfilmlist.presentation.context.Context;
 import com.example.myfilmlist.presentation.events.Events;
 import com.example.myfilmlist.presentation.presenter.Presenter;

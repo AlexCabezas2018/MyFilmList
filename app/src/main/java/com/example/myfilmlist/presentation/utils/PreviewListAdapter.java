@@ -1,4 +1,4 @@
-package com.example.myfilmlist.integration.utils;
+package com.example.myfilmlist.presentation.utils;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.myfilmlist.R;
 import com.example.myfilmlist.business.film.TFilmPreview;
+import com.example.myfilmlist.integration.utils.ImageFromURL;
 import com.example.myfilmlist.presentation.views.UpdatingView;
 
 import java.util.List;
