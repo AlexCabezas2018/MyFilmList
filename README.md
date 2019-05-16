@@ -2,7 +2,7 @@
 
 <img src="app\src\main\res\drawable\logo.png" alt="drawing" style="width:150px;"/>
 
-## Wellcome to **MyFilmList**!
+## Welcome to **MyFilmList**!
 
 Imagine that you are watching a film or a TV show with your family, your friends, or even with that special person... then something happens, you realise you've already seen it! But, of course, you can't tell anybody because you don't want to ruin the night...  
 
