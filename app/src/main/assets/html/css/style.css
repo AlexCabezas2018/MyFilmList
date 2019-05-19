@@ -62,7 +62,7 @@ dt {
    margin: 1em 0 0 0;
 }
 
-#reviewButton, #addViewButton {
+#reviewButton, #addViewButton, #shareButton {
     background: rgb(75, 81, 183);
     text-align: center;
     border-radius: .3em;

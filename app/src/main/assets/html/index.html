@@ -25,7 +25,11 @@
                         <dd id="genre">Genre</dd>
                     </dl>
                     <p id="added">Already added</p>
-                    <button id="addViewButton" onclick="document.getElementById('added').style.display = 'block';document.getElementById('addViewButton').style.display = 'none';interface.addToViewsFromJS(document.getElementById('title').innerText, document.getElementById('year').innerText, document.getElementById('filmId').innerText, document.getElementById('type').innerText, document.getElementById('imageURL').src)">Add to views</button>
+                    <button id="addViewButton" onclick="document.getElementById('added').style.display = 'block';
+                        document.getElementById('addViewButton').style.display = 'none';
+                        interface.addToViewsFromJS(document.getElementById('title').innerText, document.getElementById('year').innerText, document.getElementById('filmId').innerText, document.getElementById('type').innerText, document.getElementById('imageURL').src)">
+                        Add to views
+                    </button>
                 </div>
             </div>
         </div>
@@ -47,6 +51,7 @@
         <dl id="review">
             <dt>Review</dt>
             <dd id="reviewText">Review Text</dd>
+            <button id="shareButton" onclick="interface.shareReviewFromJS(document.getElementById('title').innerText, document.getElementById('reviewText').innerText)">Share the review</button>
         </dl>
     </div>
     <span id="type">Type</span>

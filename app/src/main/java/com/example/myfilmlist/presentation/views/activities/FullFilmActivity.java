@@ -138,6 +138,14 @@ public class FullFilmActivity extends UpdatingView {
                 ex.showMessage(FullFilmActivity.this);
             }
         }
+
+        @JavascriptInterface
+        public void shareReviewFromJS(String title, String review){
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Review for: " + title + "\n" + review);
+            startActivity(Intent.createChooser(sharingIntent, "Share via"));
+        }
     }
 
 
