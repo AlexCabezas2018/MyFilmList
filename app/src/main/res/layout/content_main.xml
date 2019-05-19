@@ -9,8 +9,8 @@
     tools:showIn="@layout/app_bar_main"
     tools:context=".presentation.views.activities.MainActivity">
 
-    <ListView
-        android:id="@+id/main_list_view"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerList"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </android.support.constraint.ConstraintLayout>

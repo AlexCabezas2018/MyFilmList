@@ -17,7 +17,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
@@ -159,6 +158,18 @@ public class DAOFilmImp extends DAOFilm {
         SQLiteHandlerViewedFilms database = new SQLiteHandlerViewedFilms(act, null, null, 1);
         return database.isFilmInDB(idGiven);
     }
+
+    @Override
+    public void removeFilmFromViewedFilms(Activity act, TFilmPreview filmToRemove) throws DAOException{
+        try{
+            SQLiteHandlerViewedFilms database = new SQLiteHandlerViewedFilms(act, null, null, 1);
+            database.daleteFilm(filmToRemove);
+        }
+        catch (SQLiteException exception) {
+            throw new DAOException("Problem while removing a film from the viewed ones ( " + exception.getMessage() + " ).");
+        }
+    }
+
 
     /*  UTILS  */
 

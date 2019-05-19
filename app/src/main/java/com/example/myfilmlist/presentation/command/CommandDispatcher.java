@@ -40,6 +40,7 @@ public class CommandDispatcher {
                 commandToReturn = new IsFilmInDB();
                 break;
             case REMOVE_FROM_FILMLIST:
+                commandToReturn = new RemoveFilmFromViewedFilmsCommand();
                 break;
             case REFRESH_FILM_LIST:
                 break;

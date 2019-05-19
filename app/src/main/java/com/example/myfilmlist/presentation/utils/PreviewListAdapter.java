@@ -20,7 +20,6 @@ public class PreviewListAdapter extends ArrayAdapter<TFilmPreview> {
     private UpdatingView view;
     private int resource;
     private List<TFilmPreview> films;
-    private View previewView;
 
     public PreviewListAdapter(UpdatingView view, int resource, List<TFilmPreview> list) {
         super(view, resource, list);
@@ -32,7 +31,7 @@ public class PreviewListAdapter extends ArrayAdapter<TFilmPreview> {
     @Override
     public View getView(int position, final View convertView, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(view);
-        previewView = inflater.inflate(resource, null);
+        View previewView = inflater.inflate(resource, null);
 
         TextView title = previewView.findViewById(R.id.titlePreview);
         TextView type = previewView.findViewById(R.id.typePreview);

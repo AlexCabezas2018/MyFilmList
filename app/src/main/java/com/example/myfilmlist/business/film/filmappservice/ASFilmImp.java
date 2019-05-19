@@ -89,4 +89,15 @@ public class ASFilmImp extends ASFilm {
     public boolean isFilmInDB(Context inputData){
         return DAOFilm.getInstance().isFilmInDB(inputData.getActivity(), inputData.getData().toString());
     }
+
+    @Override
+    public void removeViewedFilm(Context inputData) throws ASException{
+        try{
+            DAOFilm.getInstance().removeFilmFromViewedFilms(inputData.getActivity(), (TFilmPreview) inputData.getData());
+        }
+        catch (DAOException exception) {
+            throw new ASException(exception.getMessage());
+        }
+    }
+
 }

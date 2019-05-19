@@ -29,5 +29,6 @@ public abstract class ASFilm {
     public abstract Pair<List<TFilmPreview>, String> searchByPage(Pair<String, Integer> nameAndPage) throws ASException;
     public abstract List<TFilmPreview> getAllViewedFilms(Context inputData) throws ASException;
     public abstract void addViewedFilm(Context inputData) throws ASException;
+    public abstract void removeViewedFilm(Context inputData) throws ASException;
     public abstract boolean isFilmInDB(Context inputData);
 }
