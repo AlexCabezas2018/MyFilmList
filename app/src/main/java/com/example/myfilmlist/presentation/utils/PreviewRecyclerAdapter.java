@@ -9,9 +9,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.myfilmlist.R;
 import com.example.myfilmlist.business.film.TFilmPreview;
-import com.example.myfilmlist.integration.utils.ImageFromURL;
 
 import java.util.List;
 
@@ -79,7 +79,12 @@ public class PreviewRecyclerAdapter extends RecyclerView.Adapter<PreviewRecycler
                 prevYear = prevYear.concat("Present");
             }
             year.setText(prevYear);
-            new ImageFromURL(poster).execute(preview.getImageURL());
+
+            Glide.with(itemView)
+                    .load(preview.getImageURL())
+                    .error(R.drawable.logo)
+                    .placeholder(R.drawable.logo)
+                    .into(poster);
         }
 
     }

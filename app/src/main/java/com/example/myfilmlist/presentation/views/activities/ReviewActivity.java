@@ -44,8 +44,6 @@ public class ReviewActivity extends UpdatingView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
 
-        //TODO: HACERLA GENÉRICA
-
         imbdid = (String) getIntent().getSerializableExtra(FullFilmActivity.FILM_ID);
         title =  findViewById(R.id.review_title);
 

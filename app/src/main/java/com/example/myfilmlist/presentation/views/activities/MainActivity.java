@@ -97,7 +97,6 @@ public class MainActivity extends UpdatingView
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-                //TODO delete from db
                 try{
                     Presenter.getInstance().action(new Context(Events.REMOVE_FROM_FILMLIST, MainActivity.this, viewedFilms.get(viewHolder.getAdapterPosition())));
                 }

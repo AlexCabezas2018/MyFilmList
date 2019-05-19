@@ -8,9 +8,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.myfilmlist.R;
 import com.example.myfilmlist.business.film.TFilmPreview;
-import com.example.myfilmlist.integration.utils.ImageFromURL;
 import com.example.myfilmlist.presentation.views.UpdatingView;
 
 import java.util.List;
@@ -48,9 +48,16 @@ public class PreviewListAdapter extends ArrayAdapter<TFilmPreview> {
             prevYear = prevYear.concat("Present");
         }
         year.setText(prevYear);
-        new ImageFromURL(poster).execute(actualFilm.getImageURL());
+
+        Glide.with(view)
+                .load(actualFilm.getImageURL())
+                .error(R.drawable.logo)
+                .placeholder(R.drawable.logo)
+                .into(poster);
 
         button.setOnClickListener(new ParameterOnClickListener(actualFilm, view) {});
+
+        //button.setClickable(false);
 
         return previewView;
     }
