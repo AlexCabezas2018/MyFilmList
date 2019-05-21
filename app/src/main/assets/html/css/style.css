@@ -54,6 +54,7 @@ hr {
 
 dd {
     margin: 0;
+    word-wrap: break-word;
 }
 
 dt {

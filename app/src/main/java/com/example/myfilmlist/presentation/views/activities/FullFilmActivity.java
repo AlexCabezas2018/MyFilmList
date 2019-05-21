@@ -160,7 +160,7 @@ public class FullFilmActivity extends UpdatingView {
         if(event == Events.LOAD_REVIEW) {
             if(resultData.getData() != null) {
                 TReview tReview = (TReview) resultData.getData();
-                mWebView.evaluateJavascript("loadReview('"+tReview.getContent().replace("'", "´")+"');", null);
+                mWebView.evaluateJavascript("loadReview('"+tReview.getContent().replace("'", "´").replace("\n", "<br>")+"');", null);
             }
         }
         if (event == Events.IS_FILM_IN_DB){

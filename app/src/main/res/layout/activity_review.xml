@@ -10,12 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
         android:ellipsize="end"
         android:maxLines="2"
-        android:text="TextExample"
+        android:text="@string/textexample"
         android:textAlignment="center"
         android:textSize="36sp" />
 
@@ -30,35 +29,26 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="15dp" />
 
-    <EditText
-        android:id="@+id/review_text"
+    <ScrollView
+        android:id="@+id/review_scroll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/viewed_select"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="15dp" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:padding="15dp">
 
-    <Button
-        android:id="@+id/review_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/review_text"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="15dp"
-        android:text="@string/review_button" />
-
-    <Button
-        android:id="@+id/go_search_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/review_text"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="15dp"
-        android:text="@string/go_search_button" />
+        <EditText
+            android:id="@+id/review_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:autofillHints="Review"
+            android:background="@null"
+            android:inputType="textCapSentences|textMultiLine"
+            android:gravity="top|start"
+            android:maxLength="1000"
+            android:scrollHorizontally="false" />
+    </ScrollView>
 
 </RelativeLayout>

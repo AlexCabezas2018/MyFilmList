@@ -1,9 +1,11 @@
 package com.example.myfilmlist.presentation.views.activities;
 
 import android.app.Activity;
+import android.arch.lifecycle.OnLifecycleEvent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,14 +33,15 @@ public class ReviewActivity extends UpdatingView {
     public static final String REVIEW_DONE = "RD";
 
     private TextView title;
-    private Button reviewButton;
+    private MenuItem reviewButton;
     private EditText reviewText;
     private Spinner viewedSelect;
     private String imbdid = null;
 
     private List<String> viewedImbdids;
     private List<String> viewedTitles;
-    private Button goSeachButton;
+    private MenuItem goSearchButton;
+    private boolean areFilmsViewed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,47 +52,17 @@ public class ReviewActivity extends UpdatingView {
         title =  findViewById(R.id.review_title);
 
         reviewText = findViewById(R.id.review_text);
-        reviewText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        reviewText.setHorizontallyScrolling(false);
         reviewText.requestFocus();
 
-        reviewButton = findViewById(R.id.review_button);
-        reviewButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String error = isValidReview(reviewText.getText().toString());
-                if (!error.equals("")) {
-                    reviewText.setError(error);
-                } else {
-                    try {
-                        TReview review = new TReview();
-                        review.setContent(reviewText.getText().toString());
-                        review.setImdbId(imbdid);
-                        Presenter.getInstance().action(new Context(Events.ADD_REVIEW, ReviewActivity.this, review));
-
-                    }
-                    catch (ASException exception) {
-                        exception.showMessage(ReviewActivity.this);
-                    }
-                }
-            }
-        });
-
-        goSeachButton = findViewById(R.id.go_search_button);
-        goSeachButton.setVisibility(View.GONE);
-        goSeachButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent searchIntent = new Intent(ReviewActivity.this, SearchActivity.class);
-                startActivity(searchIntent);
-                finish();
-            }
-        });
-
         viewedSelect = findViewById(R.id.viewed_select);
+
+        ReviewActivity.this.invalidateOptionsMenu();
 
         if (imbdid != null){
             viewedSelect.setVisibility(View.GONE);
             title.setText("Write a review for " + ((String) getIntent().getSerializableExtra(FullFilmActivity.FILM_TITLE)));
+            areFilmsViewed = true;
         } else {
             try {
                 Presenter.getInstance().action(new Context(Events.GET_ALL_VIEWED_FILMS, ReviewActivity.this, null));
@@ -122,13 +95,36 @@ public class ReviewActivity extends UpdatingView {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
 
-        if(id == android.R.id.home) {
-            finish();
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
+            case R.id.review_button:
+                String error = isValidReview(reviewText.getText().toString());
+                if (!error.equals("")) {
+                    reviewText.setError(error);
+                } else {
+                    try {
+                        TReview review = new TReview();
+                        review.setContent(reviewText.getText().toString());
+                        review.setImdbId(imbdid);
+                        Presenter.getInstance().action(new Context(Events.ADD_REVIEW, ReviewActivity.this, review));
+                    }
+                    catch (ASException exception) {
+                        exception.showMessage(ReviewActivity.this);
+                    }
+                }
+                return true;
+            case R.id.go_search_button:
+                Intent searchIntent = new Intent(ReviewActivity.this, SearchActivity.class);
+                startActivity(searchIntent);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
 
-        return super.onOptionsItemSelected(item);
     }
 
     private String isValidReview(String review){
@@ -164,16 +160,29 @@ public class ReviewActivity extends UpdatingView {
                     viewedTitles.add(film.getTitle());
                     viewedImbdids.add(film.getImdbID());
                 }
-            }
-            else {
+                areFilmsViewed = true;
+            } else {
                 title.setText("No films viewed!");
                 viewedSelect.setVisibility(View.GONE);
-                reviewButton.setVisibility(View.GONE);
+                areFilmsViewed = false;
                 reviewText.setVisibility(View.GONE);
-                goSeachButton.setVisibility(View.VISIBLE);
             }
             viewedSelect.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, viewedTitles));
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.review_menu, menu);
+        return (super.onCreateOptionsMenu(menu));
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu (Menu menu){
+        reviewButton = menu.findItem(R.id.review_button);
+        reviewButton.setVisible(areFilmsViewed);
+        goSearchButton = menu.findItem(R.id.go_search_button);
+        goSearchButton.setVisible(!areFilmsViewed);
+        return true;
+    }
 }

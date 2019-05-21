@@ -185,9 +185,7 @@ public class MainActivity extends UpdatingView
         } else if (id == R.id.nav_searchbyname) {
             Intent searchIntent = new Intent(this, SearchActivity.class);
             startActivity(searchIntent);
-        } else if (id == R.id.nav_send){
         }
-
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
