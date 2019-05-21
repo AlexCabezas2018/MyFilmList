@@ -98,12 +98,19 @@ public class MainActivity extends UpdatingView
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                TFilmPreview swiped = viewedFilms.get(viewHolder.getAdapterPosition());
                 try{
                     Presenter.getInstance().action(new Context(Events.REMOVE_FROM_FILMLIST, MainActivity.this,
-                            new Pair<>(viewedFilms.get(viewHolder.getAdapterPosition()), viewHolder)));
+                            new Pair<>(swiped, viewHolder)));
                 }
                 catch (ASException ex) {
                     ex.showMessage(MainActivity.this);
+                }
+                try{
+                    Presenter.getInstance().action(new Context(Events.REMOVE_REVIEW, MainActivity.this, swiped.getImdbID()));
+                }
+                catch (ASException ex) {
+                    //ex.showMessage(MainActivity.this);
                 }
             }
 

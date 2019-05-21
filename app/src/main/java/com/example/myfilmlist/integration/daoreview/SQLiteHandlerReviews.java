@@ -56,6 +56,21 @@ public class SQLiteHandlerReviews extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Delete a review
+     * @param reviewImdbId
+     */
+    public void deleteReview(String reviewImdbId) throws DAOException{
+        /*  Setting up the values to insert into de database  */
+        boolean checkIfExists = (getReviewFromIMDBId(reviewImdbId) != null);
+        if(checkIfExists) { //If the review is added...
+            SQLiteDatabase database = getWritableDatabase();
+            database.delete(TABLE_NAME, COLUMN_IMDB_ID + "='" + reviewImdbId + "'", null);
+            database.close(); //Closes the instance to the database
+        }
+        else throw new DAOException("The review isn't added!");
+    }
+
 
     /**
      * Gets a Review From the database, give, an IMDB id. Returns null if the film doesn't exist

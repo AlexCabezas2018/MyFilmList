@@ -1,5 +1,7 @@
 package com.example.myfilmlist.business.review.reviewappservice;
 
+import android.app.Activity;
+
 import com.example.myfilmlist.business.review.TReview;
 import com.example.myfilmlist.exceptions.ASException;
 import com.example.myfilmlist.presentation.context.Context;
@@ -18,4 +20,5 @@ public abstract class ASReview {
 
     public abstract boolean saveReview(Context reviewToSave) throws ASException;
     public abstract TReview loadReview(Context reviewToLoad) throws ASException;
+    public abstract void removeReview(Activity activity, String reviewImdbId) throws ASException;
 }

@@ -124,15 +124,15 @@ public class SQLiteHandlerViewedFilms extends SQLiteOpenHelper {
      * Delete a film from the viewed ones.
      * @param filmToDelete
      */
-    public void daleteFilm(TFilmPreview filmToDelete) throws DAOException {
+    public void deleteFilm(TFilmPreview filmToDelete) throws DAOException {
         /*  Setting up the values to insert into de database  */
-        boolean checkIfNotExists = isFilmInDB(filmToDelete.getImdbID());
-        if(checkIfNotExists) { //If the film is viewed...
+        boolean checkIfExists = isFilmInDB(filmToDelete.getImdbID());
+        if(checkIfExists) { //If the film is viewed...
             SQLiteDatabase database = getWritableDatabase();
             database.delete(TABLE_NAME, COLUMN_IMDB_ID + "='" + filmToDelete.getImdbID() + "'", null);
             database.close(); //Closes the instance to the database
         }
-        else throw new DAOException("The film has already seen!");
+        else throw new DAOException("The film isn't added to viewed films!");
     }
 
     /**

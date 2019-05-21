@@ -150,7 +150,6 @@ public class FullFilmActivity extends UpdatingView {
                 e.showMessage(FullFilmActivity.this);
             }
             //TODO: Arreglar los problemas de diseño relacionados con el context en negocio.
-            //TODO: Arreglar: cuando una pelicula es eliminada, hay que eliminar tambien la review asociada
         }
     }
 

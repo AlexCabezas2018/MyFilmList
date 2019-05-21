@@ -1,5 +1,7 @@
 package com.example.myfilmlist.business.review.reviewappservice;
 
+import android.app.Activity;
+
 import com.example.myfilmlist.business.film.TFilmPreview;
 import com.example.myfilmlist.business.review.TReview;
 import com.example.myfilmlist.exceptions.ASException;
@@ -56,4 +58,16 @@ public class ASReviewImp extends ASReview {
         }
 
     }
+
+    @Override
+    public void removeReview(Activity activity, String reviewImdbId) throws ASException {
+        try{
+            DAOReview.getInstance().removeReview(activity, reviewImdbId);
+        }
+        catch (DAOException exception) {
+            throw new ASException(exception.getMessage());
+        }
+    }
+
+
 }

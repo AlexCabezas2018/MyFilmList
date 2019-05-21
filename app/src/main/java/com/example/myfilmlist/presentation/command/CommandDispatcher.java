@@ -26,6 +26,7 @@ public class CommandDispatcher {
                 commandToReturn = new SaveReviewCommand();
                 break;
             case REMOVE_REVIEW:
+                commandToReturn = new RemoveReviewCommand();
                 break;
             case LOAD_REVIEW:
                 commandToReturn = new LoadReviewCommand();

@@ -1,5 +1,6 @@
 package com.example.myfilmlist.integration.daoreview;
 
+import android.app.Activity;
 import android.database.sqlite.SQLiteException;
 
 import com.example.myfilmlist.business.review.TReview;
@@ -39,6 +40,23 @@ public class DAOReviewImp extends DAOReview {
         }
         catch (DAOException | SQLiteException exception) {
             throw new DAOException("There was an exception while loading the review (" + exception.getMessage() + ")");
+        }
+    }
+
+    /**
+     * Delete a review
+     * @param activity
+     * @param reviewImdbId
+     * @throws DAOException
+     */
+    @Override
+    public void removeReview(Activity activity, String reviewImdbId) throws DAOException {
+        try{
+            SQLiteHandlerReviews database = new SQLiteHandlerReviews(activity, null, null, 1);
+            database.deleteReview(reviewImdbId);
+        }
+        catch (DAOException exception) {
+            throw new DAOException("Problem while removing a review ( " + exception.getMessage() + " ).");
         }
     }
 }

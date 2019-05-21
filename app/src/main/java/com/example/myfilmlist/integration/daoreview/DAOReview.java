@@ -21,4 +21,5 @@ public abstract class DAOReview {
 
     public abstract void saveReview(Context reviewToSave) throws DAOException;
     public abstract TReview loadReview(Context toFind) throws DAOException;
+    public abstract void removeReview(Activity activity, String reviewImdbId) throws DAOException;
 }

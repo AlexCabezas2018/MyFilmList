@@ -148,7 +148,7 @@ public class DAOFilmImp extends DAOFilm {
             SQLiteHandlerViewedFilms database = new SQLiteHandlerViewedFilms(act, null, null, 1);
             database.insertFilm(filmToAdd);
         }
-        catch (SQLiteException exception) {
+        catch (DAOException exception) {
             throw new DAOException("Problem while adding a film to the viewed ones ( " + exception.getMessage() + " ).");
         }
     }
@@ -186,9 +186,9 @@ public class DAOFilmImp extends DAOFilm {
     public void removeFilmFromViewedFilms(Activity act, TFilmPreview filmToRemove) throws DAOException{
         try{
             SQLiteHandlerViewedFilms database = new SQLiteHandlerViewedFilms(act, null, null, 1);
-            database.daleteFilm(filmToRemove);
+            database.deleteFilm(filmToRemove);
         }
-        catch (SQLiteException exception) {
+        catch (DAOException exception) {
             throw new DAOException("Problem while removing a film from the viewed ones ( " + exception.getMessage() + " ).");
         }
     }
