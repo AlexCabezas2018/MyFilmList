@@ -10,7 +10,7 @@ import java.util.List;
 public class GetAllViewedFilmsCommand implements Command {
     @Override
     public Context execute(Context inputData) throws ASException {
-        List<TFilmPreview> filmsToReturn = ASFilm.getInstance().getAllViewedFilms(inputData);
+        List<TFilmPreview> filmsToReturn = ASFilm.getInstance().getAllViewedFilms(inputData.getActivity());
         return new Context(inputData.getEvent(), inputData.getActivity(), filmsToReturn);
     }
 }

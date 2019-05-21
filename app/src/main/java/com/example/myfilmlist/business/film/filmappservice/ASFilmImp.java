@@ -61,15 +61,15 @@ public class ASFilmImp extends ASFilm {
 
     /**
      * It returns all the films that the user has marked as viewed in previous sessions.
-     * @param inputData
+     * @param activity
      * @return
      * @throws ASException
      */
     @Override
-    public List<TFilmPreview> getAllViewedFilms(Context inputData) throws ASException {
+    public List<TFilmPreview> getAllViewedFilms(Activity activity) throws ASException {
         List<TFilmPreview> filmsToReturn;
         try {
-            filmsToReturn = DAOFilm.getInstance().getAllViewedFilms(inputData);
+            filmsToReturn = DAOFilm.getInstance().getAllViewedFilms(activity);
             return filmsToReturn;
         }
         catch (DAOException exception) {
@@ -79,13 +79,13 @@ public class ASFilmImp extends ASFilm {
 
     /**
      * Add a film to the viewed ones.
-     * @param inputData
+     * @param activity, filmToSave
      * @throws ASException
      */
     @Override
-    public void addViewedFilm(Context inputData) throws ASException {
+    public void addViewedFilm(Activity activity, TFilmPreview filmPreview) throws ASException {
         try{
-            DAOFilm.getInstance().addFilmToViewedFilms(inputData.getActivity(), (TFilmPreview) inputData.getData());
+            DAOFilm.getInstance().addFilmToViewedFilms(activity, filmPreview);
         }
         catch (DAOException exception) {
             throw new ASException(exception.getMessage());
@@ -94,34 +94,14 @@ public class ASFilmImp extends ASFilm {
 
     /**
      * Returns true if the film is in the viewed ones
-     * @param inputData
+     * @param activity, id
      * @return
      */
     @Override
-    public boolean isFilmInDB(Context inputData){
-        return DAOFilm.getInstance().isFilmInDB(inputData.getActivity(), inputData.getData().toString());
+    public boolean isFilmInDB(Activity activity, String imdbId){
+        return DAOFilm.getInstance().isFilmInDB(activity, imdbId);
     }
 
-
-    /**
-     * Prepares a String with the information to share
-     * @param title
-     * @param review
-     * @return String
-     */
-    @Override
-    public String shareReview(String title, String review, Activity activity) throws ASException {
-        String resultOutput = "";
-        if(title == null || review == null) throw new ASException("Error while preparing the review (title or review are not defined!");
-        TFilmPreview film = DAOFilm.getInstance().searchFilmInViewedByTitle(title, activity);
-        if(film == null) throw new ASException("There was a problem while preparing the review (the film is not viewed!");
-
-        resultOutput += "Hey! Look what I just posted about " + title +"!\n\n";
-        resultOutput += "\uD83C\uDFAC Review \uD83C\uDFAC\n\n";
-        resultOutput += review + "\n\n";
-        resultOutput += "You can see more about this film with the following link: " + "https://www.imdb.com/title/" + film.getImdbID() + "/\n\n";
-        return resultOutput;
-    }
 
     @Override
     public void removeViewedFilm(Activity activity, TFilmPreview filmToRemove) throws ASException{

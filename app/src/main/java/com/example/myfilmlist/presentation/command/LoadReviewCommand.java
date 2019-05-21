@@ -12,7 +12,7 @@ public class LoadReviewCommand implements Command {
 
     @Override
     public Context execute(Context inputData) throws ASException {
-        TReview review = ASReview.getInstance().loadReview(inputData);
+        TReview review = ASReview.getInstance().loadReview(inputData.getActivity(), (String) inputData.getData());
         return new Context(inputData.getEvent(), inputData.getActivity(), review);
     }
 }

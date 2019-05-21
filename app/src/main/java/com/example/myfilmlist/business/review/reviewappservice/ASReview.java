@@ -18,7 +18,8 @@ public abstract class ASReview {
         return instance;
     }
 
-    public abstract boolean saveReview(Context reviewToSave) throws ASException;
-    public abstract TReview loadReview(Context reviewToLoad) throws ASException;
+    public abstract boolean saveReview(Activity activity, TReview reviewToSave) throws ASException;
+    public abstract TReview loadReview(Activity activity, String reviewId) throws ASException;
     public abstract void removeReview(Activity activity, String reviewImdbId) throws ASException;
+    public abstract String shareReview(String title, String review, Activity activity) throws ASException;
 }

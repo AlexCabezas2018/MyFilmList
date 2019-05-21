@@ -8,7 +8,6 @@ import com.example.myfilmlist.exceptions.ASException;
 import com.example.myfilmlist.exceptions.DAOException;
 import com.example.myfilmlist.integration.daofilm.DAOFilm;
 import com.example.myfilmlist.integration.daoreview.DAOReview;
-import com.example.myfilmlist.presentation.context.Context;
 
 public class ASReviewImp extends ASReview {
 
@@ -18,19 +17,18 @@ public class ASReviewImp extends ASReview {
      * @throws ASException
      */
     @Override
-    public boolean saveReview(Context reviewToSave) throws ASException{
+    public boolean saveReview(Activity activity, TReview reviewToSave) throws ASException {
         try {
-            TReview toSave = (TReview) reviewToSave.getData();
 
-            if(toSave.getContent().equals("")) throw new ASException("Content can't be empty!");
-            if(toSave.getImdbId().equals("")) throw new ASException("Imdb id can't be empty!");
+            if(reviewToSave.getContent().equals("")) throw new ASException("Content can't be empty!");
+            if(reviewToSave.getImdbId().equals("")) throw new ASException("Imdb id can't be empty!");
 
-            TReview checkIfDontExists = loadReview(new Context(reviewToSave.getEvent(), reviewToSave.getActivity(), toSave.getImdbId()));
+            TReview checkIfDontExists = DAOReview.getInstance().loadReview(activity, reviewToSave.getImdbId());
             if(checkIfDontExists != null) throw new ASException("There is a review for that film!");
 
-            if (!DAOFilm.getInstance().isFilmInDB(reviewToSave.getActivity(), toSave.getImdbId())) throw new ASException("You nedd to view the film first!");
+            if (!DAOFilm.getInstance().isFilmInDB(activity, reviewToSave.getImdbId())) throw new ASException("You need to view the film first!");
 
-            DAOReview.getInstance().saveReview(reviewToSave);
+            DAOReview.getInstance().saveReview(activity, reviewToSave);
             return true;
         }
         catch (DAOException exception) {
@@ -41,15 +39,15 @@ public class ASReviewImp extends ASReview {
 
     /**
      * Returns a review, given a correct imdb id.
-     * @param reviewToLoad: a combination of an activity (necessary to instantiate the db) and an integer.
+     * @param activity (necessary to instantiate the db) and a String.
      * @return null if the review doesn't exist
      * @return TReview if the review exists
      */
     @Override
-    public TReview loadReview(Context reviewToLoad) throws ASException {
+    public TReview loadReview(Activity activity, String reviewId) throws ASException {
         TReview reviewToReturn;
         try {
-            reviewToReturn = DAOReview.getInstance().loadReview(reviewToLoad);
+            reviewToReturn = DAOReview.getInstance().loadReview(activity, reviewId);
             if(reviewToReturn == null) return null;
             return reviewToReturn;
         }
@@ -67,6 +65,26 @@ public class ASReviewImp extends ASReview {
         catch (DAOException exception) {
             throw new ASException(exception.getMessage());
         }
+    }
+
+    /**
+     * Prepares a String with the information to share
+     * @param title
+     * @param review
+     * @return String
+     */
+    @Override
+    public String shareReview(String title, String review, Activity activity) throws ASException {
+        String resultOutput = "";
+        if(title == null || review == null) throw new ASException("Error while preparing the review (title or review are not defined!");
+        TFilmPreview film = DAOFilm.getInstance().searchFilmInViewedByTitle(title, activity);
+        if(film == null) throw new ASException("There was a problem while preparing the review (the film is not viewed!");
+
+        resultOutput += "Hey! Look what I just posted about " + title +"!\n\n";
+        resultOutput += "\uD83C\uDFAC Review \uD83C\uDFAC\n\n";
+        resultOutput += review + "\n\n";
+        resultOutput += "You can see more about this film with the following link: " + "https://www.imdb.com/title/" + film.getImdbID() + "/\n\n";
+        return resultOutput;
     }
 
 

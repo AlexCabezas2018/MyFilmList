@@ -17,6 +17,7 @@ import com.example.myfilmlist.R;
 import com.example.myfilmlist.business.film.TFilmFull;
 import com.example.myfilmlist.business.film.TFilmPreview;
 import com.example.myfilmlist.exceptions.ASException;
+import com.example.myfilmlist.exceptions.InternetException;
 import com.example.myfilmlist.integration.utils.InternetUtils;
 import com.example.myfilmlist.presentation.utils.PreviewListAdapter;
 import com.example.myfilmlist.presentation.context.Context;
@@ -88,12 +89,17 @@ public class SearchActivity extends UpdatingView {
 
                         }
                     }
-                    else throw new ASException("There was a problem while trying to connect to internet");
+                    else throw new InternetException();
+
                 }
-                catch (ASException ex){
-                    progressDialog.dismiss();
-                    ex.showMessage(SearchActivity.this);
-                    return false;
+                catch (final InternetException ex) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressDialog.dismiss();
+                            ex.showMessage(SearchActivity.this);
+                        }
+                    });
                 }
                 return true;
             }
@@ -113,10 +119,26 @@ public class SearchActivity extends UpdatingView {
                     @Override
                     public void run() {
                         try{
-                            TFilmPreview filmFull = (TFilmPreview) mListView.getAdapter().getItem(position); //We get the film we selected.
-                            imdbId = filmFull.getImdbID(); //Gets the IMDB id. We will use it to find the film with full information.
-                            Presenter.getInstance().action(new Context(Events.SEARCH_BY_IMDB_ID, SearchActivity.this, imdbId));
-                        } catch (final ASException e) {
+                            if(InternetUtils.isNetworkAvailable(getApplicationContext())) {
+                                TFilmPreview filmFull = (TFilmPreview) mListView.getAdapter().getItem(position); //We get the film we selected.
+                                imdbId = filmFull.getImdbID(); //Gets the IMDB id. We will use it to find the film with full information.
+                                try{
+                                    Presenter.getInstance().action(new Context(Events.SEARCH_BY_IMDB_ID, SearchActivity.this, imdbId));
+                                }
+                                catch (final ASException ex) {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            progressDialog.dismiss();
+                                            ex.showMessage(SearchActivity.this);
+                                        }
+                                    });
+                                }
+
+                            }
+                            else throw new InternetException();
+
+                        } catch (final InternetException e) {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {

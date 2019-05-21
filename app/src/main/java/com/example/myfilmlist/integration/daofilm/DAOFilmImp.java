@@ -125,15 +125,15 @@ public class DAOFilmImp extends DAOFilm {
 
     /**
      * Return all the viewed films of the user
-     * @param inputData
+     * @param activity
      * @return
      * @throws DAOException
      */
     @Override
-    public List<TFilmPreview> getAllViewedFilms(Context inputData) throws DAOException {
+    public List<TFilmPreview> getAllViewedFilms(Activity activity) throws DAOException {
         List<TFilmPreview> films;
         try {
-            SQLiteHandlerViewedFilms database = new SQLiteHandlerViewedFilms(inputData.getActivity(), null, null, 1);
+            SQLiteHandlerViewedFilms database = new SQLiteHandlerViewedFilms(activity, null, null, 1);
             films = database.getAllViewedFilms();
             return films;
         }
