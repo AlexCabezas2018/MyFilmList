@@ -32,5 +32,6 @@ public abstract class DAOFilm {
     public abstract void addFilmToViewedFilms(Activity act, TFilmPreview filmToAdd) throws DAOException;
     public abstract void removeFilmFromViewedFilms(Activity act, TFilmPreview filmToRemove) throws DAOException;
     public abstract boolean isFilmInDB(Activity act,String idGiven);
+    public abstract TFilmPreview searchFilmInViewedByTitle(String title, Activity activity);
 
 }

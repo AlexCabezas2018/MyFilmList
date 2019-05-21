@@ -153,12 +153,35 @@ public class DAOFilmImp extends DAOFilm {
         }
     }
 
+    /**
+     * Returns true if the film is in the viewed ones, false in other case.
+     * @param act
+     * @param idGiven
+     * @return
+     */
     @Override
     public boolean isFilmInDB(Activity act,String idGiven) {
         SQLiteHandlerViewedFilms database = new SQLiteHandlerViewedFilms(act, null, null, 1);
         return database.isFilmInDB(idGiven);
     }
 
+    /**
+     * Returns null if the film doesn't exists, or the previewFilm in other case.
+     * @param title
+     * @return
+     */
+    @Override
+    public TFilmPreview searchFilmInViewedByTitle(String title, Activity activity) {
+        SQLiteHandlerViewedFilms database = new SQLiteHandlerViewedFilms(activity, null, null, 1);
+        return database.searchFilmByTitle(title);
+    }
+
+    /**
+     * Removes a film from the list of the viewed ones.
+     * @param act
+     * @param filmToRemove
+     * @throws DAOException
+     */
     @Override
     public void removeFilmFromViewedFilms(Activity act, TFilmPreview filmToRemove) throws DAOException{
         try{

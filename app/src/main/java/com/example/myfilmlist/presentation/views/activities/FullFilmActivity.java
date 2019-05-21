@@ -3,6 +3,7 @@ package com.example.myfilmlist.presentation.views.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.MenuItem;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
@@ -18,6 +19,8 @@ import com.example.myfilmlist.presentation.context.Context;
 import com.example.myfilmlist.presentation.events.Events;
 import com.example.myfilmlist.presentation.presenter.Presenter;
 import com.example.myfilmlist.presentation.views.UpdatingView;
+
+import java.util.HashMap;
 
 public class FullFilmActivity extends UpdatingView {
 
@@ -141,10 +144,13 @@ public class FullFilmActivity extends UpdatingView {
 
         @JavascriptInterface
         public void shareReviewFromJS(String title, String review){
-            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-            sharingIntent.setType("text/plain");
-            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Review for: " + title + "\n" + review);
-            startActivity(Intent.createChooser(sharingIntent, "Share via"));
+            try {
+                Presenter.getInstance().action(new Context(Events.SHARE_REVIEW, FullFilmActivity.this, new Pair<>(title, review)));
+            } catch (ASException e) {
+                e.showMessage(FullFilmActivity.this);
+            }
+            //TODO: Arreglar los problemas de diseño relacionados con el context en negocio.
+            //TODO: Arreglar: cuando una pelicula es eliminada, hay que eliminar tambien la review asociada
         }
     }
 
@@ -163,10 +169,17 @@ public class FullFilmActivity extends UpdatingView {
                 mWebView.evaluateJavascript("addViewed();", null);
             }
         }
-        if(event == Events.ADD_TO_FILMLIST) {
+        else if(event == Events.ADD_TO_FILMLIST) {
             Toast.makeText(getApplicationContext(), "Film added successfully!", Toast.LENGTH_SHORT).show();
         }
+        else if(event == Events.SHARE_REVIEW) {
+            String data = (String) resultData.getData();
 
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, data);
+            startActivity(Intent.createChooser(sharingIntent, "Share via"));
+        }
     }
 }
 

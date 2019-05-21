@@ -1,5 +1,6 @@
 package com.example.myfilmlist.business.film.filmappservice;
 
+import android.app.Activity;
 import android.util.Pair;
 
 import com.example.myfilmlist.business.film.TFilmFull;
@@ -11,6 +12,7 @@ import com.example.myfilmlist.presentation.context.Context;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Arrays;
 import java.util.List;
 
 public class ASFilmImp extends ASFilm {
@@ -75,6 +77,11 @@ public class ASFilmImp extends ASFilm {
         }
     }
 
+    /**
+     * Add a film to the viewed ones.
+     * @param inputData
+     * @throws ASException
+     */
     @Override
     public void addViewedFilm(Context inputData) throws ASException {
         try{
@@ -85,15 +92,41 @@ public class ASFilmImp extends ASFilm {
         }
     }
 
+    /**
+     * Returns true if the film is in the viewed ones
+     * @param inputData
+     * @return
+     */
     @Override
     public boolean isFilmInDB(Context inputData){
         return DAOFilm.getInstance().isFilmInDB(inputData.getActivity(), inputData.getData().toString());
     }
 
+
+    /**
+     * Prepares a String with the information to share
+     * @param title
+     * @param review
+     * @return String
+     */
     @Override
-    public void removeViewedFilm(Context inputData) throws ASException{
+    public String shareReview(String title, String review, Activity activity) throws ASException {
+        String resultOutput = "";
+        if(title == null || review == null) throw new ASException("Error while preparing the review (title or review are not defined!");
+        TFilmPreview film = DAOFilm.getInstance().searchFilmInViewedByTitle(title, activity);
+        if(film == null) throw new ASException("There was a problem while preparing the review (the film is not viewed!");
+
+        resultOutput += "Hey! Look what I just posted about " + title + "!\n\n";
+        resultOutput += new String(Character.toChars(0x1F3AC)) + " Review " + new String(Character.toChars(0x1F3AC)) + "\n\n";
+        resultOutput += review + "\n\n";
+        resultOutput += "You can see more about this film with the following link: " + "https://www.imdb.com/title/" + film.getImdbID() + "/\n\n";
+        return resultOutput;
+    }
+
+    @Override
+    public void removeViewedFilm(Activity activity, TFilmPreview filmToRemove) throws ASException{
         try{
-            DAOFilm.getInstance().removeFilmFromViewedFilms(inputData.getActivity(), (TFilmPreview) inputData.getData());
+            DAOFilm.getInstance().removeFilmFromViewedFilms(activity, filmToRemove);
         }
         catch (DAOException exception) {
             throw new ASException(exception.getMessage());

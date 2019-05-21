@@ -18,6 +18,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,16 +99,11 @@ public class MainActivity extends UpdatingView
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
                 try{
-                    Presenter.getInstance().action(new Context(Events.REMOVE_FROM_FILMLIST, MainActivity.this, viewedFilms.get(viewHolder.getAdapterPosition())));
+                    Presenter.getInstance().action(new Context(Events.REMOVE_FROM_FILMLIST, MainActivity.this,
+                            new Pair<>(viewedFilms.get(viewHolder.getAdapterPosition()), viewHolder)));
                 }
                 catch (ASException ex) {
                     ex.showMessage(MainActivity.this);
-                }
-                viewedFilms.remove(viewHolder.getAdapterPosition());
-                recyclerAdapter.notifyDataSetChanged();
-                if(viewedFilms.isEmpty()){
-                    emptyView.setVisibility(View.VISIBLE);
-                    recyclerView.setVisibility(View.GONE);
                 }
             }
 
@@ -212,6 +208,14 @@ public class MainActivity extends UpdatingView
                 recyclerView.setVisibility(View.GONE);
             }
         } else if(resultData.getEvent() == Events.REMOVE_FROM_FILMLIST){
+            RecyclerView.ViewHolder data = (RecyclerView.ViewHolder) resultData.getData();
+            viewedFilms.remove(data.getAdapterPosition());
+            recyclerAdapter.notifyDataSetChanged();
+            if(viewedFilms.isEmpty()){
+                emptyView.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+            }
+
             Toast.makeText(getApplicationContext(), "Film removed successfully!", Toast.LENGTH_SHORT).show();
         }
     }

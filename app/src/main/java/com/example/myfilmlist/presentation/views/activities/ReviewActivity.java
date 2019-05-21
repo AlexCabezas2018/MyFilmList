@@ -3,6 +3,7 @@ package com.example.myfilmlist.presentation.views.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -48,6 +49,7 @@ public class ReviewActivity extends UpdatingView {
         title =  findViewById(R.id.review_title);
 
         reviewText = findViewById(R.id.review_text);
+        reviewText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         reviewText.requestFocus();
 
         reviewButton = findViewById(R.id.review_button);

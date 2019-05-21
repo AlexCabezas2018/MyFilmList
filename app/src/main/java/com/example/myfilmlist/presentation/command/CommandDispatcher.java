@@ -42,7 +42,8 @@ public class CommandDispatcher {
             case REMOVE_FROM_FILMLIST:
                 commandToReturn = new RemoveFilmFromViewedFilmsCommand();
                 break;
-            case REFRESH_FILM_LIST:
+            case SHARE_REVIEW:
+                commandToReturn = new ShareReviewCommand();
                 break;
         }
 

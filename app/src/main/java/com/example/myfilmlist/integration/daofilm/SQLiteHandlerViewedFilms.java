@@ -72,6 +72,30 @@ public class SQLiteHandlerViewedFilms extends SQLiteOpenHelper {
         //It is on the database
     }
 
+    public TFilmPreview searchFilmByTitle(String title) {
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_TITLE + "== '" + title + "';";
+
+        SQLiteDatabase database = getWritableDatabase();
+        Cursor filmPreviewCursor = database.rawQuery(query, null);
+        filmPreviewCursor.moveToFirst();
+
+        if(filmPreviewCursor.getCount() == 0) {
+            filmPreviewCursor.close();
+            database.close();
+            return null;
+        }
+        else {
+            TFilmPreview toReturn = new TFilmPreview();
+            toReturn.setTitle(filmPreviewCursor.getString(filmPreviewCursor.getColumnIndex(COLUMN_TITLE)));
+            toReturn.setImageURL(filmPreviewCursor.getString(filmPreviewCursor.getColumnIndex(COLUMN_IMG_URL)));
+            toReturn.setImdbID(filmPreviewCursor.getString(filmPreviewCursor.getColumnIndex(COLUMN_IMDB_ID)));
+            toReturn.setType(filmPreviewCursor.getString(filmPreviewCursor.getColumnIndex(COLUMN_TYPE)));
+            toReturn.setYear(filmPreviewCursor.getString(filmPreviewCursor.getColumnIndex(COLUMN_YEAR)));
+
+            return toReturn;
+        }
+    }
+
 
     /**
      * Adds a film to the viewed ones.
