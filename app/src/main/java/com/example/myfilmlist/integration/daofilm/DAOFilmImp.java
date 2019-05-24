@@ -1,7 +1,6 @@
 package com.example.myfilmlist.integration.daofilm;
 
 import android.app.Activity;
-import android.database.sqlite.SQLiteException;
 import android.util.Pair;
 
 import com.example.myfilmlist.business.film.TFilmFull;
@@ -9,7 +8,6 @@ import com.example.myfilmlist.business.film.TFilmPreview;
 import com.example.myfilmlist.exceptions.DAOException;
 import com.example.myfilmlist.integration.utils.FilmUtils;
 import com.example.myfilmlist.integration.utils.JSONUtils;
-import com.example.myfilmlist.presentation.context.Context;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -179,14 +177,14 @@ public class DAOFilmImp extends DAOFilm {
     /**
      * Removes a film from the list of the viewed ones.
      * @param act
-     * @param filmToRemove
+     * @param filmIdToRemove
      * @throws DAOException
      */
     @Override
-    public void removeFilmFromViewedFilms(Activity act, TFilmPreview filmToRemove) throws DAOException{
+    public void removeFilmFromViewedFilms(Activity act, String filmIdToRemove) throws DAOException{
         try{
             SQLiteHandlerViewedFilms database = new SQLiteHandlerViewedFilms(act, null, null, 1);
-            database.deleteFilm(filmToRemove);
+            database.deleteFilm(filmIdToRemove);
         }
         catch (DAOException exception) {
             throw new DAOException("Problem while removing a film from the viewed ones ( " + exception.getMessage() + " ).");

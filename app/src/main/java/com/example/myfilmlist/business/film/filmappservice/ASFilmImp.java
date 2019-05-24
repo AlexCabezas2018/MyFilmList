@@ -8,11 +8,9 @@ import com.example.myfilmlist.business.film.TFilmPreview;
 import com.example.myfilmlist.exceptions.ASException;
 import com.example.myfilmlist.exceptions.DAOException;
 import com.example.myfilmlist.integration.daofilm.DAOFilm;
-import com.example.myfilmlist.presentation.context.Context;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.Arrays;
 import java.util.List;
 
 public class ASFilmImp extends ASFilm {
@@ -88,7 +86,7 @@ public class ASFilmImp extends ASFilm {
             DAOFilm.getInstance().addFilmToViewedFilms(activity, filmPreview);
         }
         catch (DAOException exception) {
-            throw new ASException(exception.getMessage());
+            throw new ASException("The film has already seen!");
         }
     }
 
@@ -103,10 +101,16 @@ public class ASFilmImp extends ASFilm {
     }
 
 
+    /**
+     * Removes a film from the list of the viewed ones.
+     * @param activity
+     * @param filmIdToDelete
+     * @throws ASException
+     */
     @Override
-    public void removeViewedFilm(Activity activity, TFilmPreview filmToRemove) throws ASException{
+    public void removeViewedFilm(Activity activity, String filmIdToDelete) throws ASException{
         try{
-            DAOFilm.getInstance().removeFilmFromViewedFilms(activity, filmToRemove);
+            DAOFilm.getInstance().removeFilmFromViewedFilms(activity, filmIdToDelete);
         }
         catch (DAOException exception) {
             throw new ASException(exception.getMessage());

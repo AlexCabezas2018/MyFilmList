@@ -63,8 +63,7 @@ dt {
    margin: 1em 0 0 0;
 }
 
-#reviewButton, #addViewButton, #shareButton {
-    background: rgb(75, 81, 183);
+button {
     text-align: center;
     border-radius: .3em;
     color: #FFFFFF;
@@ -74,11 +73,14 @@ dt {
     border-color: black;
 }
 
-#type, #filmId, #review, #added {
-    display: none;
+#reviewButton, #addViewButton, #shareButton {
+    background: rgb(75, 81, 183);
 }
 
-#added {
-    font-size: 1.5em;
-    font-weight: bold;
+#removeReviewButton, #removeViewButton{
+    background: rgb(198,56,61);
+}
+
+#type, #filmId, #review, #added, #removeViewButton{
+    display: none;
 }

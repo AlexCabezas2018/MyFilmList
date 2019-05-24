@@ -24,12 +24,12 @@
                         <dt>Genre</dt>
                         <dd id="genre">Genre</dd>
                     </dl>
-                    <p id="added">Already added</p>
-                    <button id="addViewButton" onclick="document.getElementById('added').style.display = 'block';
-                        document.getElementById('addViewButton').style.display = 'none';
-                        interface.addToViewsFromJS(document.getElementById('title').innerText, document.getElementById('year').innerText, document.getElementById('filmId').innerText, document.getElementById('type').innerText, document.getElementById('imageURL').src)">
+                    <button id="addViewButton" onclick="addViewed(); interface.addToViewsFromJS(document.getElementById('title').innerText,
+                        document.getElementById('year').innerText, document.getElementById('filmId').innerText,
+                        document.getElementById('type').innerText, document.getElementById('imageURL').src)">
                         Add to views
                     </button>
+                    <button id="removeViewButton" onclick="removeView(); removeReview(); interface.removeFrimViewaFromJS(document.getElementById('filmId').innerText)">Remove the film</button>
                 </div>
             </div>
         </div>
@@ -52,6 +52,7 @@
             <dt>Review</dt>
             <dd id="reviewText">Review Text</dd>
             <button id="shareButton" onclick="interface.shareReviewFromJS(document.getElementById('title').innerText, document.getElementById('reviewText').innerText)">Share the review</button>
+            <button id="removeReviewButton" onclick="removeReview(); interface.removeReviewFromJS(document.getElementById('filmId').innerText)">Delete the review</button>
         </dl>
     </div>
     <span id="type">Type</span>

@@ -20,8 +20,6 @@ import com.example.myfilmlist.presentation.events.Events;
 import com.example.myfilmlist.presentation.presenter.Presenter;
 import com.example.myfilmlist.presentation.views.UpdatingView;
 
-import java.util.HashMap;
-
 public class FullFilmActivity extends UpdatingView {
 
     public static final String FILM_TITLE = "FTR";
@@ -143,6 +141,23 @@ public class FullFilmActivity extends UpdatingView {
         }
 
         @JavascriptInterface
+        public void removeFrimViewaFromJS(String imbdId){
+            try{
+                Presenter.getInstance().action(new Context(Events.REMOVE_FROM_FILMLIST, FullFilmActivity.this,
+                        new Pair<>(imbdId, null)));
+            }
+            catch (ASException ex) {
+                ex.showMessage(FullFilmActivity.this);
+            }
+            try{
+                Presenter.getInstance().action(new Context(Events.REMOVE_REVIEW, FullFilmActivity.this, imbdId));
+            }
+            catch (ASException ex) {
+                //ex.showMessage(MainActivity.this);
+            }
+        }
+
+        @JavascriptInterface
         public void shareReviewFromJS(String title, String review){
             try {
                 Presenter.getInstance().action(new Context(Events.SHARE_REVIEW, FullFilmActivity.this, new Pair<>(title, review)));
@@ -150,6 +165,15 @@ public class FullFilmActivity extends UpdatingView {
                 e.showMessage(FullFilmActivity.this);
             }
             //TODO: Arreglar los problemas de diseño relacionados con el context en negocio.
+        }
+
+        @JavascriptInterface
+        public void removeReviewFromJS(String imdbId){
+            try {
+                Presenter.getInstance().action(new Context(Events.REMOVE_REVIEW, FullFilmActivity.this, imdbId));
+            } catch (ASException e) {
+                e.showMessage(FullFilmActivity.this);
+            }
         }
     }
 
@@ -178,6 +202,10 @@ public class FullFilmActivity extends UpdatingView {
             sharingIntent.setType("text/plain");
             sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, data);
             startActivity(Intent.createChooser(sharingIntent, "Share via"));
+        } else if(event == Events.REMOVE_REVIEW){
+            Toast.makeText(getApplicationContext(), "Review removed successfully!", Toast.LENGTH_SHORT).show();
+        }  else if(resultData.getEvent() == Events.REMOVE_FROM_FILMLIST){
+            Toast.makeText(getApplicationContext(), "Film removed successfully!", Toast.LENGTH_SHORT).show();
         }
     }
 }

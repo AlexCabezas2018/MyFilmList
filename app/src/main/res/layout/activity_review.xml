@@ -36,8 +36,7 @@
         android:layout_below="@+id/viewed_select"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
-        android:padding="15dp">
+        android:layout_marginBottom="0dp">
 
         <EditText
             android:id="@+id/review_text"
@@ -48,7 +47,8 @@
             android:inputType="textCapSentences|textMultiLine"
             android:gravity="top|start"
             android:maxLength="1000"
-            android:scrollHorizontally="false" />
+            android:scrollHorizontally="false"
+            android:padding="15dp"/>
     </ScrollView>
 
 </RelativeLayout>

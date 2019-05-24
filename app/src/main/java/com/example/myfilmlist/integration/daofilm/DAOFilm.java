@@ -6,7 +6,6 @@ import android.util.Pair;
 import com.example.myfilmlist.business.film.TFilmFull;
 import com.example.myfilmlist.business.film.TFilmPreview;
 import com.example.myfilmlist.exceptions.DAOException;
-import com.example.myfilmlist.presentation.context.Context;
 
 import java.util.List;
 
@@ -30,7 +29,7 @@ public abstract class DAOFilm {
     public abstract Pair<List<TFilmPreview>, String> getFilmsFromNextPage(Pair<String, Integer> inputInformation) throws DAOException;
     public abstract List<TFilmPreview> getAllViewedFilms(Activity activity) throws DAOException;
     public abstract void addFilmToViewedFilms(Activity act, TFilmPreview filmToAdd) throws DAOException;
-    public abstract void removeFilmFromViewedFilms(Activity act, TFilmPreview filmToRemove) throws DAOException;
+    public abstract void removeFilmFromViewedFilms(Activity act, String filmIdToRemove) throws DAOException;
     public abstract boolean isFilmInDB(Activity act,String idGiven);
     public abstract TFilmPreview searchFilmInViewedByTitle(String title, Activity activity);
 

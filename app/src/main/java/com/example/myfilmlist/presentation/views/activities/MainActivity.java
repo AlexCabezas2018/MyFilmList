@@ -101,7 +101,7 @@ public class MainActivity extends UpdatingView
                 TFilmPreview swiped = viewedFilms.get(viewHolder.getAdapterPosition());
                 try{
                     Presenter.getInstance().action(new Context(Events.REMOVE_FROM_FILMLIST, MainActivity.this,
-                            new Pair<>(swiped, viewHolder)));
+                            new Pair<>(swiped.getImdbID(), viewHolder)));
                 }
                 catch (ASException ex) {
                     ex.showMessage(MainActivity.this);
