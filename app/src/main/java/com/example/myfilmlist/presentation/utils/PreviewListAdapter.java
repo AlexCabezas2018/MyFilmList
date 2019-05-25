@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.myfilmlist.R;
 import com.example.myfilmlist.business.film.TFilmPreview;
 import com.example.myfilmlist.presentation.views.UpdatingView;
@@ -43,21 +44,17 @@ public class PreviewListAdapter extends ArrayAdapter<TFilmPreview> {
 
         title.setText(actualFilm.getTitle());
         type.setText(actualFilm.getType());
-        String prevYear = actualFilm.getYear();
-        if (prevYear.endsWith("–")){
-            prevYear = prevYear.concat("Present");
-        }
-        year.setText(prevYear);
+        year.setText(actualFilm.getYear());
 
         Glide.with(view)
                 .load(actualFilm.getImageURL())
+                .transforms(new RoundedCorners(10))
                 .error(R.drawable.logo)
                 .placeholder(R.drawable.logo)
                 .into(poster);
 
         button.setOnClickListener(new ParameterOnClickListener(actualFilm, view) {});
 
-        //button.setClickable(false);
 
         return previewView;
     }
