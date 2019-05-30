@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.myfilmlist.R;
 import com.example.myfilmlist.business.film.TFilmPreview;
 
@@ -74,14 +75,11 @@ public class PreviewRecyclerAdapter extends RecyclerView.Adapter<PreviewRecycler
         public void addData(TFilmPreview preview){
             title.setText(preview.getTitle());
             type.setText(preview.getType());
-            String prevYear = preview.getYear();
-            if (prevYear.endsWith("–")){
-                prevYear = prevYear.concat("Present");
-            }
-            year.setText(prevYear);
+            year.setText(preview.getYear());
 
             Glide.with(itemView)
                     .load(preview.getImageURL())
+                    .transforms(new RoundedCorners(10))
                     .error(R.drawable.logo)
                     .placeholder(R.drawable.logo)
                     .into(poster);
