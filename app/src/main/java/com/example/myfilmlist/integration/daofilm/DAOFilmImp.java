@@ -76,6 +76,7 @@ public class DAOFilmImp extends DAOFilm {
      * @param inputInformation
      * @return
      */
+    @Override
     public Pair<List<TFilmPreview>, String> getFilmsFromNextPage(final Pair<String, Integer> inputInformation) throws DAOException{
         exceptionResponse = "";
         databaseResponse = null; //We clear these two variables every time we start an operation.

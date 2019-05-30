@@ -1,4 +1,4 @@
-package com.example.myfilmlist.integration.utils;
+package com.example.myfilmlist.presentation.utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

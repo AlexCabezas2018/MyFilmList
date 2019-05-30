@@ -80,7 +80,7 @@ public class ASReviewImp extends ASReview {
         TFilmPreview film = DAOFilm.getInstance().searchFilmInViewedByTitle(title, activity);
         if(film == null) throw new ASException("There was a problem while preparing the review (the film is not viewed!");
 
-        resultOutput += "Hey! Look what I just posted about " + title +"!\n\n";
+        resultOutput += "Hey! Look what I just posted about " + title +" in MyFilmList!\n\n";
         resultOutput += "\uD83C\uDFAC Review \uD83C\uDFAC\n\n";
         resultOutput += review + "\n\n";
         resultOutput += "You can see more about this film with the following link: " + "https://www.imdb.com/title/" + film.getImdbID() + "/\n\n";

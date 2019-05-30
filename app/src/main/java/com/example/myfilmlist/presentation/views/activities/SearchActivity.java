@@ -18,7 +18,7 @@ import com.example.myfilmlist.business.film.TFilmFull;
 import com.example.myfilmlist.business.film.TFilmPreview;
 import com.example.myfilmlist.exceptions.ASException;
 import com.example.myfilmlist.exceptions.InternetException;
-import com.example.myfilmlist.integration.utils.InternetUtils;
+import com.example.myfilmlist.presentation.utils.InternetUtils;
 import com.example.myfilmlist.presentation.utils.PreviewListAdapter;
 import com.example.myfilmlist.presentation.context.Context;
 import com.example.myfilmlist.presentation.events.Events;
